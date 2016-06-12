@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/login-fire/login-fire.html">
 
 <dom-module id="my-view2">
 
@@ -46,6 +47,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
+
+<login-fire
+        id="loginLogic"
+        app-name="convoofire"
+        twitter
+        user="{{user}}"
+        signed-in="{{signedIn}}" debug>
+      </login-fire>
+
+
+
       <div class="circle">2</div>
       <h1>View Two</h1>
       <p>Ea duis bonorum nec, falli paulo aliquid ei eum.</p>

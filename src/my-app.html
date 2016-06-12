@@ -19,6 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-app.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-app">
@@ -90,6 +91,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div title>My App</div>
           </app-toolbar>
         </app-header>
+
+
+<firebase-app
+      name="convoofire"
+      api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
+      auth-domain="convoofire.firebaseapp.com"
+      database-url="https://convoofire.firebaseio.com">
+    </firebase-app>
+
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
           <my-view1 name="view1"></my-view1>
