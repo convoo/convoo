@@ -19,8 +19,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
-<link rel="import" href="../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="my-icons.html">
+<link rel="import" href="my-login.html">
 
 <dom-module id="my-app">
 
@@ -77,7 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="view1" href="/view1">View One</a>
-          <a name="view2" href="/view2">View Two</a>
+          <a name="login" href="/login">View Two</a>
           <a name="view3" href="/view3">View Three</a>
         </iron-selector>
       </app-drawer>
@@ -89,6 +90,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <app-toolbar>
             <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
             <div title>My App</div>
+            <div>
+              <a id="sign-in" hidden$="{{signedIn}}"> Sign in</a>
+              <a id="sign-out" hidden$="{{!signedIn}}">Sign out</a>
+            </div>
           </app-toolbar>
         </app-header>
 
@@ -103,7 +108,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
           <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2"></my-view2>
+          <my-login name="login" signed-in="{{signedIn}}" id="login"></my-login>
           <my-view3 name="view3"></my-view3>
         </iron-pages>
 
@@ -133,6 +138,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         '_routePageChanged(routeData.page)'
       ],
 
+      listeners: {
+        'sign-out.tap' : '_signOut',
+        'sign-in.tap' : '_signIn'
+      },
+
       _routePageChanged: function(page) {
         this.page = page || 'view1';
       },
@@ -141,6 +151,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // load page import on demand.
         this.importHref(
           this.resolveUrl('my-' + page + '.html'), null, null, true);
+      },
+
+      _signOut: function(){
+        console.log("signing out");
+        this.$.login.$.loginLogic.signOut();
+      },
+
+      _signIn: function(){
+        this.page = 'login';
       }
 
     });
