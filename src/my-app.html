@@ -74,6 +74,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: 500;
       }
 
+      a paper-button,
+      a:active paper-button,
+      a:visited paper-button {
+        color: #fff;
+      }
+
+      .toolbar-link {
+        text-decoration: none;
+      }
+
+      .toolbar-logo {
+        transform-origin: left top;
+        white-space: nowrap;
+        flex: 1;
+        flex-basis: 0.000000001px;
+      }
+
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -101,13 +118,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <app-header condenses reveals effects="waterfall">
           <app-toolbar style="height:40px">
-    
               <paper-icon-button class="menu-button" icon="menu" drawer-toggle hidden$="{{wideLayout}}"></paper-icon-button>
-            <div title>
-              <convoo-logo background="red" height="17" class="flex-1"> </convoo-logo>
-              </div>
-                <paper-button id="sign-in" class="toolbar-button" hidden$="{{signedIn}}" > Sign In</paper-button>
-                <paper-button id="sign-out" class="toolbar-button" hidden$="{{!signedIn}}">Sign out</paper-button>
+            <div class="toolbar-logo">
+              <a href="/" class="toolbar-link flex">
+                <convoo-logo background="red" height="17"></convoo-logo>
+              </a>
+            </div>
+            <a href="/login" hidden$="{{signedIn}}" class="toolbar-link" tabindex="-1">
+              <paper-button id="sign-in" class="toolbar-button">Sign In</paper-button>
+            </a>
+            <paper-button id="sign-out" class="toolbar-button" hidden$="{{!signedIn}}">Sign out</paper-button>
           </app-toolbar>
         </app-header>
 
@@ -159,8 +179,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       listeners: {
-        'sign-out.tap' : '_signOut',
-        'sign-in.tap' : '_signIn'
+        'sign-out.tap' : '_signOut'
       },
 
       _routePageChanged: function(page) {
@@ -181,13 +200,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _signOut: function(){
-        console.log("signing out");
         this.$.login.$.loginLogic.signOut();
       },
-
-      _signIn: function(){
-        this.page = 'login';
-      }
 
     });
 
