@@ -23,12 +23,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
-<link rel="import" href="my-icons.html">
-<link rel="import" href="my-login.html">
+<link rel="import" href="convoo-icons.html">
+<link rel="import" href="convoo-login.html">
 <link rel="import" href="convoo_components/convoo-logo.html">
 <link rel="import" href="convoo_components/user-menu.html">
 
-<dom-module id="my-app">
+<dom-module id="convoo-app">
 
   <template>
 
@@ -187,9 +187,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-          <my-view1 name="view1"></my-view1>
-          <my-login name="login" signed-in="{{signedIn}}" user="{{user}}" id="login"></my-login>
-          <my-view3 name="view3"></my-view3>
+          <convoo-view1 name="view1"></convoo-view1>
+          <convoo-login name="login" signed-in="{{signedIn}}" user="{{user}}" id="login"></convoo-login>
+          <convoo-view3 name="view3"></convoo-view3>
         </iron-pages>
 
       </app-header-layout>
@@ -203,7 +203,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
 
-      is: 'my-app',
+      is: 'convoo-app',
 
       properties: {
 
@@ -260,7 +260,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _pageChanged: function(page) {
         // load page import on demand.
         this.importHref(
-          this.resolveUrl('my-' + page + '.html'), null, null, true);
+          this.resolveUrl('convoo-' + page + '.html'), null, null, true);
       },
 
       _signOut: function(){

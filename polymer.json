@@ -1,9 +1,9 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/convoo-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-login.html",
-    "src/my-view3.html"
+    "src/convoo-view1.html",
+    "src/convoo-login.html",
+    "src/convoo-view3.html"
   ]
 }
