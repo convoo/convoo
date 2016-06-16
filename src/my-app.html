@@ -148,13 +148,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer" hidden$="{{!signedIn}}">
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <div class="profile-image-container">
-            <img src="https://avatars2.githubusercontent.com/u/14357697?v=3&s=460" class="profile-image">
+            <img src="{{user.photoURL}}"" class="profile-image">
           </div>
           <div class="profile-name">
-            Will In China
+            {{user.displayName}}
           </div>
           <div class="draw-button-container">
-            <paper-button class="draw-button">Sign Out</paper-button>
+            <paper-button class="draw-button" on-tap="_signOut">Sign Out</paper-button>
           </div>
         </iron-selector>
       </app-drawer>
@@ -172,7 +172,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a href="/login" hidden$="{{signedIn}}" class="toolbar-link" tabindex="-1">
               <paper-button id="sign-in" class="toolbar-button">Sign In</paper-button>
             </a>
-            <user-menu id="sign-out" hidden$="{{!signedIn}}"></user-menu>
+            <user-menu id="sign-out" hidden$="{{hideWebDropdown}}" user="{{user}}"></user-menu>
             <!--<paper-button id="sign-out" class="toolbar-button" hidden$="{{!signedIn}}">Sign out</paper-button>-->
           </app-toolbar>
         </app-header>
@@ -188,7 +188,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
           <my-view1 name="view1"></my-view1>
-          <my-login name="login" signed-in="{{signedIn}}" id="login"></my-login>
+          <my-login name="login" signed-in="{{signedIn}}" user="{{user}}" id="login"></my-login>
           <my-view3 name="view3"></my-view3>
         </iron-pages>
 
@@ -220,6 +220,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         hideDrawerIcon: {
           type: Boolean,
           computed: '_computeHideDrawerIcon(wideLayout, signedIn)'
+        },
+        hideWebDropdown: {
+          type: Boolean,
+          computed: '_computeHideWebDropdown(wideLayout, signedIn)'
         }
 
       },
@@ -230,6 +234,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       listeners: {
         //  'sign-out.tap' : '_signOut'
+      },
+
+      _computeHideWebDropdown: function(wideLayout, signedIn){
+        // Show when signedIn and not wideLayout
+        return (!wideLayout && signedIn) || !signedIn;
       },
 
       _computeHideDrawerIcon: function(wideLayout, signedIn){
