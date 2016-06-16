@@ -41,10 +41,10 @@
         app-name="convoofire"
         path="/r"
         equal-to="{{roomId}}"
-        data="{{data}}">
+        data="{{thisRoom}}">
     </firebase-query>
 
-      <template is="dom-repeat" items="{{data}}">
+      <template is="dom-repeat" items="{{thisRoom}}">
         <div class="card">
           <h1>The id is: {{item.$key}}</h1>
           <p>The test data is {{item.test}}</p>

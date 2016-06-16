@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 
 <dom-module id="convoo-new-room">
 
@@ -45,12 +46,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
+    <firebase-document
+      id="newRoomDocument"
+      app-name="convoofire"
+      path="/r/"
+      data="{{newRoom}}">
+  </firebase-document>
+
     <div class="card">
       
-      <div class="circle">3</div>
-      <h1>View Three</h1>
-      <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
+      <paper-input label="Test" value="{{newRoom.test}}"></paper-input>
+
+      <paper-button id="create-room" raised on-tap="clicked">Create</paper-button><br>
+      
     </div>
 
   </template>
@@ -60,6 +68,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
 
       is: 'convoo-new-room',
+
+      clicked: function(){
+        // This is saving the data but not giving me access to the recorded object.
+        this.$.newRoomDocument.save("/r/");
+      }
 
     });
 

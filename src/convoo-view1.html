@@ -50,11 +50,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         id="query"
         app-name="convoofire"
         path="/r"
-        data="{{data}}">
+        data="{{allRooms}}">
     </firebase-query>
 
     
-    <template is="dom-repeat" items="{{data}}">
+    <template is="dom-repeat" items="{{allRooms}}">
 
       <div class="card">
         <div class="circle">
