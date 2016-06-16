@@ -72,7 +72,7 @@
         } else {
           this.thisRoom.score++;
         }
-        this.$.document.save("/r/"+this.roomId);
+        this.$.document.save("/r",this.roomId);
       },
 
       downvote: function(e){
@@ -81,7 +81,7 @@
         } else {
           this.thisRoom.score--;
         }
-        this.$.document.save("/r/"+this.roomId);
+        this.$.document.save("/r",this.roomId);
       }
 
     });
