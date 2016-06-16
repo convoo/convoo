@@ -104,7 +104,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-drawer-layout fullbleed force-narrow>
 
       <!-- Drawer content -->
-      <app-drawer id="drawer">
+      <app-drawer id="drawer" hidden$="{{!signedIn}}">
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="view1" href="/view1">View One</a>
@@ -118,7 +118,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <app-header condenses reveals effects="waterfall">
           <app-toolbar style="height:40px">
-              <paper-icon-button class="menu-button" icon="menu" drawer-toggle hidden$="{{wideLayout}}"></paper-icon-button>
+              <paper-icon-button class="menu-button" icon="menu" drawer-toggle hidden$="{{hideDrawerIcon}}"></paper-icon-button>
             <div class="toolbar-logo">
               <a href="/" class="toolbar-link flex">
                 <convoo-logo background="red" height="17"></convoo-logo>
@@ -170,6 +170,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean,
           value: false,
           observer: '_layoutChange',
+        },
+        hideDrawerIcon: {
+          type: Boolean,
+          computed: '_computeHideDrawerIcon(wideLayout, signedIn)'
         }
 
       },
@@ -180,6 +184,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       listeners: {
         'sign-out.tap' : '_signOut'
+      },
+
+      _computeHideDrawerIcon: function(wideLayout, signedIn){
+        // Show when signedIn and not wideLayout
+        return !(!wideLayout && signedIn);
       },
 
       _routePageChanged: function(page) {
