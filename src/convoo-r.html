@@ -1,5 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 
 <dom-module id="convoo-r">
 
@@ -36,20 +36,22 @@
       }
     </style>
 
-    <firebase-query
-        id="query"
+    <firebase-document
+        id="document"
         app-name="convoofire"
-        path="/r"
-        equal-to="{{roomId}}"
+        path="/r/{{roomId}}"
         data="{{thisRoom}}">
-    </firebase-query>
+    </firebase-document>
 
-      <template is="dom-repeat" items="{{thisRoom}}">
-        <div class="card">
-          <h1>The id is: {{item.$key}}</h1>
-          <p>The test data is {{item.test}}</p>
-        </div>
-      </template>
+
+    <div class="card">
+      <p>The test data is {{thisRoom.test}}</p>
+      <p>Score {{thisRoom.score}}</p>
+      
+      <paper-button on-tap="upvote" raised>Upvote</paper-button>
+      <paper-button raised on-tap="downvote">Downvote</paper-button>
+      
+    </div>
       
 
   </template>
@@ -62,6 +64,24 @@
 
       properties: {
         roomId: String
+      },
+
+      upvote: function(e){
+        if(typeof this.thisRoom.score === 'undefined' || this.thisRoom.score == null){
+          this.thisRoom.score = 1;
+        } else {
+          this.thisRoom.score++;
+        }
+        this.$.document.save("/r/"+this.roomId);
+      },
+
+      downvote: function(e){
+        if(typeof this.thisRoom.score === 'undefined' || this.thisRoom.score == null){
+          this.thisRoom.score = -1;
+        } else {
+          this.thisRoom.score--;
+        }
+        this.$.document.save("/r/"+this.roomId);
       }
 
     });
