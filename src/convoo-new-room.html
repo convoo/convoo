@@ -70,6 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'convoo-new-room',
 
       clicked: function(){
+        this.newRoom.score = 0;
         // This is saving the data but not giving me access to the recorded object.
         this.$.newRoomDocument.save("/r/");
       }
