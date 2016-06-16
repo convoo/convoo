@@ -39,14 +39,17 @@
     <firebase-query
         id="query"
         app-name="convoofire"
-        path="/r/{{roomId}}"
+        path="/r"
+        equal-to="{{roomId}}"
         data="{{data}}">
     </firebase-query>
 
-      <div class="card">
-        <h1>{{data.id}}</h1>
-        <p>{{data.test}}</p>
-      </div>
+      <template is="dom-repeat" items="{{data}}">
+        <div class="card">
+          <h1>The id is: {{item.$key}}</h1>
+          <p>The test data is {{item.test}}</p>
+        </div>
+      </template>
       
 
   </template>
