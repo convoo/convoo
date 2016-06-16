@@ -25,7 +25,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="my-login.html">
-<link rel="import" href="convoo-logo/convoo-logo.html">
+<link rel="import" href="convoo_components/convoo-logo.html">
+<link rel="import" href="convoo_components/user-menu.html">
 
 <dom-module id="my-app">
 
@@ -69,15 +70,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       .toolbar-button{
         height: 32px;
-        font-size: 16px; 
+        font-size: 14px; 
         text-transform: none;
         font-weight: 500;
+        padding-top: 10px;
       }
 
       a paper-button,
       a:active paper-button,
       a:visited paper-button {
-        color: #fff;
+        color: #000;
+        
       }
 
       .toolbar-link {
@@ -127,7 +130,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a href="/login" hidden$="{{signedIn}}" class="toolbar-link" tabindex="-1">
               <paper-button id="sign-in" class="toolbar-button">Sign In</paper-button>
             </a>
-            <paper-button id="sign-out" class="toolbar-button" hidden$="{{!signedIn}}">Sign out</paper-button>
+            <user-menu id="sign-out" hidden$="{{!signedIn}}"></user-menu>
+            <!--<paper-button id="sign-out" class="toolbar-button" hidden$="{{!signedIn}}">Sign out</paper-button>-->
           </app-toolbar>
         </app-header>
 
@@ -183,7 +187,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       listeners: {
-        'sign-out.tap' : '_signOut'
+         'sign-out.tap' : '_signOut'
       },
 
       _computeHideDrawerIcon: function(wideLayout, signedIn){
