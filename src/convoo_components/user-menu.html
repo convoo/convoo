@@ -11,8 +11,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
-
-
 <dom-module id="user-menu">
   <template>
     <style>
@@ -22,39 +20,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             cursor: hand;
             cursor: pointer;
       }
-      .name{
-        font-weight: 500;
-        text-transform: none;
-        font-size: 13px;
-        padding-left: 8px;
-        color: black;
-        opacity: 0.8;
-      }
-
       .profile-image{
         height: 25px;
         width: 25px;
         position: relative;
-        top: 2px;
+        top: 7px;
         border-radius: 50%;
         border: 1px solid firebrick;
       }
-      .button{
-        height: 32px;
+      .pointer{
+        width: 5px;
+        height: 5px;
+        position: relative;
         background-color: #e74157;
-        background: #e74157;
+        top:5px;
+        left: 11px;
+        -ms-transform: rotate(45deg); /* IE 9 */
+        -webkit-transform: rotate(45deg); /* Safari */
+        transform: rotate(45deg);
+        border-top: 2px solid #3a474c;
+        border-left: 2px solid #3a474c;
+      }
+      .drop-down{
+        background-color: #e74157;
+        width: 100px;
+        height: 100px;
+        position: relative;
+        top:100px;
+        left: 5px;
       }
         
     </style>
 
-
-<paper-button  class="layout horizontal flex button" style="display: flex">
-  <div >
-    <img src="https://avatars2.githubusercontent.com/u/14357697?v=3&s=460" class="profile-image">
-    </div>
-  <div class="name">Will In China</div>
-</paper-button >
-
+  <img src="https://avatars2.githubusercontent.com/u/14357697?v=3&s=460" class="profile-image" hidden$="{{wideLayout}}">
+  <div class="pointer"></div>
+  <!--<ul class="drop-down">
+    <li>Sign Out</li>
+  </ul>-->
 
   </template>
   <script>
@@ -75,15 +77,3 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   })();
   </script>
 </dom-module>
-
-
-
-
-
-
-
-
-
-
-
-

@@ -42,29 +42,61 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       app-header {
         background-color: var(--app-primary-color);
-        color: #fff;
+        color: #b03142;
       }
       app-header paper-icon-button {
-        --paper-icon-button-ink-color: white;
+        --paper-icon-button-ink-color: black;
+      }
+
+
+      #drawer{
+          --app-drawer-content-container: {
+          background-color: #2a363b;
+        };
       }
 
       .drawer-list {
-        margin: 0 20px;
+        outline: none;
+        font-size: 13px; 
       }
-      .drawer-list a {
-        display: block;
-        padding: 0 16px;
-        line-height: 40px;
-        text-decoration: none;
-        color: var(--app-secondary-color);
+
+      .profile-image-container{
+        width: 100%;
+        text-align: center;
+        padding-top: 40px;
+        padding-bottom: 7px;
       }
-      .drawer-list a.iron-selected {
-        color: black;
-        font-weight: bold;
+      .profile-name{
+        width: 100%;
+        text-align: center;
+        text-transform: none;
+        color:#e4edf0;
+        font-weight: 100;
+        font-size: 14px;
       }
-      .drawer-list a.subroute {
-        padding-left: 32px;
+
+      .profile-image{
+          width: 50px;
+          height: 50px;
+          border: 1px solid #000;
+          border-radius: 50%;
       }
+
+      .draw-button-container{
+        width: 100%;
+        text-align: center;
+        padding-top: 50px;        
+      }
+
+      .draw-button{
+        width: calc(100% - 40px);
+        background-color: #3a474c;
+        margin: 0 auto;
+        color:#e4edf0;
+        text-transform: none;
+        font-weight: 100;
+      }
+
       [hidden] {
         display: none !important;
       }
@@ -79,8 +111,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       a paper-button,
       a:active paper-button,
       a:visited paper-button {
-        color: #000;
-        
+        position: relative;
+        top: -1px;
+        color: #fff;
+        background-color: #cc394d
       }
 
       .toolbar-link {
@@ -92,6 +126,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         white-space: nowrap;
         flex: 1;
         flex-basis: 0.000000001px;
+      }
+
+      .menu-button{
+        margin-right: 15px;
       }
 
     </style>
@@ -108,17 +146,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <!-- Drawer content -->
       <app-drawer id="drawer" hidden$="{{!signedIn}}">
-        <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="/view1">View One</a>
-          <a name="login" href="/login">View Two</a>
-          <a name="view3" href="/view3">View Three</a>
+          <div class="profile-image-container">
+            <img src="https://avatars2.githubusercontent.com/u/14357697?v=3&s=460" class="profile-image">
+          </div>
+          <div class="profile-name">
+            Will In China
+          </div>
+          <div class="draw-button-container">
+            <paper-button class="draw-button">Sign Out</paper-button>
+          </div>
         </iron-selector>
       </app-drawer>
 
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
-
         <app-header condenses reveals effects="waterfall">
           <app-toolbar style="height:40px">
               <paper-icon-button class="menu-button" icon="menu" drawer-toggle hidden$="{{hideDrawerIcon}}"></paper-icon-button>
@@ -187,7 +229,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       listeners: {
-         'sign-out.tap' : '_signOut'
+        //  'sign-out.tap' : '_signOut'
       },
 
       _computeHideDrawerIcon: function(wideLayout, signedIn){
