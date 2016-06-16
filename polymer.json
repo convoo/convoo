@@ -2,8 +2,9 @@
   "entrypoint": "index.html",
   "shell": "src/convoo-app.html",
   "fragments": [
-    "src/convoo-view1.html",
+    "src/convoo-home.html",
     "src/convoo-login.html",
-    "src/convoo-view3.html"
+    "src/convoo-new-room.html",
+    "src/convoo-r.html"
   ]
 }

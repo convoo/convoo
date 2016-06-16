@@ -162,7 +162,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer" hidden$="{{!signedIn}}">
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <div class="profile-image-container">
-            <img src="{{user.photoURL}}"" class="profile-image">
+            <img src="{{user.photoURL}}" class="profile-image">
           </div>
           <div class="profile-name">
             {{user.displayName}}
@@ -201,13 +201,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-          <convoo-view1 name="view1"></convoo-view1>
+          <convoo-home name="home"></convoo-home>
           <convoo-login name="login" signed-in="{{signedIn}}" user="{{user}}" id="login"></convoo-login>
           <convoo-new-room name="new-room"></convoo-new-room>
           <convoo-r name="r" room-id="{{subrouteData.id}}"></convoo-r>
         </iron-pages>
 
-        <a href="/new-room" tabindex="-1">
+        <a href="/new-room" tabindex="-1" hidden$="{{!signedIn}}">
           <paper-fab icon="add" ></paper-fab>
         </a>
         
@@ -267,7 +267,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _routePageChanged: function(page) {
-        this.page = page || 'view1';
+        this.page = page || 'home';
       },
 
       _layoutChange: function(wide) {
