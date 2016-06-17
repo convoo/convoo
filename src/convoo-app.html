@@ -97,6 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color:#e4edf0;
         text-transform: none;
         font-weight: 100;
+        margin-bottom: 7px;
       }
 
       [hidden] {
@@ -168,7 +169,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             {{user.displayName}}
           </div>
           <div class="draw-button-container">
-            <paper-button class="draw-button" on-tap="_signOut">Sign Out</paper-button>
+            <paper-button class="draw-button" id="sign-out">Sign Out</paper-button>
           </div>
         </iron-selector>
       </app-drawer>
@@ -186,7 +187,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a href="/login" hidden$="{{signedIn}}" class="toolbar-link" tabindex="-1">
               <paper-button id="sign-in" class="toolbar-button">Sign In</paper-button>
             </a>
-            <user-menu id="sign-out" hidden$="{{hideWebDropdown}}" user="{{user}}"></user-menu>
+            <user-menu id="user-menu" hidden$="{{hideWebDropdown}}" user="{{user}}"></user-menu>
             <!--<paper-button id="sign-out" class="toolbar-button" hidden$="{{!signedIn}}">Sign out</paper-button>-->
           </app-toolbar>
         </app-header>
@@ -253,7 +254,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       listeners: {
-        //  'sign-out.tap' : '_signOut'
+        'sign-out.tap' : '_signOut'
       },
 
       _computeHideWebDropdown: function(wideLayout, signedIn){
@@ -286,6 +287,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _signOut: function(){
         this.$.login.$.loginLogic.signOut();
       },
+
 
     });
 

@@ -27,23 +27,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         border-radius: 5px;
         background-color: #2a363b;
         color: #757575;
+        max-width: 200px;
       }
       .circle {
         display: inline-block;
-        height: 64px;
-        width: 64px;
+        height: 21px;
+        width: 21px;
         border-radius: 50%;
-        background: #ddd;
+        background: #2a363b;
+        border: 1px solid #36d1ff;
         line-height: 64px;
-        font-size: 30px;
-        color: #555;
+        font-size:10px;
+        color: #36d1ff;
         text-align: center;
+        display: block;
+      }
+      .circle span{
+        position: relative;
+        top: -21px;
       }
       h1 {
         font-size: 22px;
         margin: 16px 0;
         color: #212121;
       }
+      .room-title{
+        line-height: 1.3em;
+        font-size: 0.85em;
+        color: #e4edf0;
+        text-decoration: none;
+        width: 100%;
+      }
+      .room-title:hover{
+        text-decoration: underline;
+      }
+
+
     </style>
 
     <firebase-query
@@ -55,17 +74,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </firebase-query>
 
     
-    <template is="dom-repeat" items="{{allRooms}}">
+    <template is="dom-repeat" items="{{allRooms}}" class="repeat">
 
       <div class="card">
-        <div class="circle">
-          {{item.score}}
-        </div>
-        <h1>{{item.$key}}</h1>
-        <p>{{item.test}}</p>
-        <a href="/r/{{item.$key}}">
-          <paper-button raised>Join</paper-button>
+        <a href="/r/{{item.$key}}" class="room-title">
+          {{item.$key}}
         </a>
+        <div class="circle">
+        <span>{{item.score}}</span>  
+        </div>
       </div>
       
     </template>
