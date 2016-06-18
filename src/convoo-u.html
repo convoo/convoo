@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="convoo_components/convoo-room-card-list.html">
 
 <dom-module id="convoo-u">
 
@@ -59,22 +60,7 @@
       
     </div>
 
-    
-    <template is="dom-repeat" items="{{rooms}}">
-      <div class="card">
-        <a href="/r/{{item.$key}}" class="room-title">
-          {{item.name}}
-        </a>
-        <p>
-          {{item.body}}
-        </p>
-        <div class="circle">
-        <span>{{item.score}}</span>
-        </div>
-      </div>
-    </template>
-    
-      
+    <convoo-room-card-list rooms="{{rooms}}"></convoo-room-card-list>
 
   </template>
 

@@ -1,0 +1,36 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="convoo-room-card.html">
+
+<dom-module id="convoo-room-card-list">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <div class="layout horizontal wrap">
+      <template is="dom-repeat" items="{{rooms}}">
+        <convoo-room-card room="{{item}}"></convoo-room-card>
+      </template>
+    </div>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'convoo-room-card-list',
+
+      properties: {
+        rooms: Array,
+      }
+
+    });
+
+  </script>
+
+</dom-module>

@@ -10,6 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="convoo_components/convoo-room-card-list.html">
 
 <dom-module id="convoo-home">
 
@@ -18,51 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
-        padding: 10px;
       }
-      .card {
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-        padding: 16px;
-        margin: 24px;
-        border-radius: 5px;
-        background-color: #2a363b;
-        color: #757575;
-        max-width: 200px;
-      }
-      .circle {
-        display: inline-block;
-        height: 21px;
-        width: 21px;
-        border-radius: 50%;
-        background: #2a363b;
-        border: 1px solid #36d1ff;
-        line-height: 64px;
-        font-size:10px;
-        color: #36d1ff;
-        text-align: center;
-        display: block;
-      }
-      .circle span{
-        position: relative;
-        top: -21px;
-      }
-      h1 {
-        font-size: 22px;
-        margin: 16px 0;
-        color: #212121;
-      }
-      .room-title{
-        line-height: 1.3em;
-        font-size: 0.85em;
-        color: #e4edf0;
-        text-decoration: none;
-        width: 100%;
-      }
-      .room-title:hover{
-        text-decoration: underline;
-      }
-
-
     </style>
 
     <firebase-query
@@ -73,22 +30,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         limit-to-last="5">
     </firebase-query>
 
-    
-    <template is="dom-repeat" items="{{allRooms}}" class="repeat">
-
-      <div class="card">
-        <a href="/r/{{item.$key}}" class="room-title">
-          {{item.name}}
-        </a>
-        <p>
-          {{item.body}}
-        </p>
-        <div class="circle">
-        <span>{{item.score}}</span>
-        </div>
-      </div>
-      
-    </template>
+    <convoo-room-card-list rooms="{{allRooms}}"></convoo-room-card-list>
 
   </template>
 
