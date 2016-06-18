@@ -12,13 +12,9 @@
         display: block;
         padding: 10px;
       }
-      .card {
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+      .container {
         padding: 16px;
         margin: 24px;
-        border-radius: 5px;
-        background-color: #2a363b;
-        color: #757575;
       }
       .circle {
         display: inline-block;
@@ -31,10 +27,42 @@
         color: #555;
         text-align: center;
       }
-      h1 {
+      .profile{
+        text-align: center;
+      }
+
+      .profile img{
+        border-radius: 50%;
+        border: 1px solid black;
+        width: 90px;
+        height: 90px;
+        background-color: black
+      }
+      .profile h1{
+        color:#e4edf0;
+        font-weight: 100;
         font-size: 22px;
-        margin: 16px 0;
-        color: #212121;
+        position: relative;
+        top: -10px
+      }
+      .follow-button{
+        text-transform: none;
+        background-color: #e74157;
+        color:#e4edf0;
+        font-weight: 100;
+        width: 200px;
+        font-size: 14px;
+      }
+      h2{
+        color:#e4edf0;
+        font-weight: 400;
+        font-size: 18px;
+        margin: 0px;
+      }
+
+      hr{
+        opacity: 0.1;
+        margin-bottom: 18px;
       }
     </style>
 
@@ -54,13 +82,23 @@
         data="{{rooms}}">
     </firebase-query>
 
-    <div class="card">
-      <h1>{{thisUser.displayName}}</h1>
+    <div class="container profile">
       <img src$="{{thisUser.photoURL}}">
-      
+      <h1>{{thisUser.displayName}}</h1>
+      <paper-button class="follow-button">Follow</paper-button>
     </div>
 
-    <convoo-room-card-list rooms="{{rooms}}"></convoo-room-card-list>
+    <div class="container">
+      <h2>Started</h2>
+      <hr>
+      <convoo-room-card-list rooms="{{rooms}}"></convoo-room-card-list>
+    </div>
+
+        <div class="container">
+      <h2>Active In</h2>
+      <hr>
+      <convoo-room-card-list rooms="{{rooms}}"></convoo-room-card-list>
+    </div>
 
   </template>
 

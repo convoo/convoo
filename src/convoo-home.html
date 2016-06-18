@@ -20,6 +20,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+      .container {
+         padding: 16px;
+        margin: 24px;
+      }
     </style>
 
     <firebase-query
@@ -30,7 +34,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         limit-to-last="5">
     </firebase-query>
 
+<div class="container">
     <convoo-room-card-list rooms="{{allRooms}}"></convoo-room-card-list>
+</div>
 
   </template>
 

@@ -1,4 +1,6 @@
+
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
 
 <dom-module id="convoo-room-card">
 
@@ -10,12 +12,13 @@
       }
       .card {
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-        padding: 16px;
-        margin: 24px;
         border-radius: 5px;
         background-color: #2a363b;
         color: #757575;
         max-width: 200px;
+        min-width: 150px;
+        min-height: 220px;
+        margin: 12px 5px 5px 5px;
       }
       .circle {
         display: inline-block;
@@ -49,22 +52,49 @@
       .room-title:hover{
         text-decoration: underline;
       }
+      .room-name{
+        color: #e4edf0;
+        font-weight: 600;
+        line-height: 1.3em;
+        max-height: 2.6em;
+        overflow: hidden;
+        width: 100%;
+        text-overflow: ellipsis;
+        white-space: normal;
+        word-wrap: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;  
+        opacity: 0.9;
+      }
+      .card-content{
+        padding: 9px !important;
+      }
+      .room-desc{
+        font-size: 0.6em;
+        max-height: 1.6em;
+        color: #e4edf0;
+        opacity: 0.6;
+        overflow: hidden;
+        width: 100%;
+        text-overflow: ellipsis;
+        white-space: normal;
+        word-wrap: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;  
+      }
     </style>
 
-    <div class="card">
-      <a href="/r/{{room.$key}}" class="room-title">
-        {{room.name}}
-      </a>
-      <p>
-        {{room.body}}
-      </p>
-      <p>
-        <a href="{{room.url}}">Link</a>
-      </p>
-      <div class="circle">
-        <span>{{room.score}}</span>
+  <a href="/r/{{room.$key}}" class="room-title">
+    <paper-card image="../../images/test.png" class="card">
+      <div class="card-content">
+      <div class="room-name">{{room.name}}</div>  
+        <div class="room-desc">{{room.body}}</div> 
       </div>
-    </div>
+    </paper-card>
+  </a>
+
 
   </template>
 
@@ -83,3 +113,8 @@
   </script>
 
 </dom-module>
+
+
+
+
+

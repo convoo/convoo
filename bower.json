@@ -20,7 +20,8 @@
     "polymerfire": "firebase/polymerfire#^0.9.2",
     "login-fire": "master",
     "paper-fab": "PolymerElements/paper-fab#^1.2.0",
-    "slug": "^0.9.1"
+    "slug": "^0.9.1",
+    "paper-card": "PolymerElements/paper-card#^1.1.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

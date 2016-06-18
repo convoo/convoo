@@ -68,13 +68,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding-top: 40px;
         padding-bottom: 7px;
       }
+
       .profile-name{
         width: 100%;
-        text-align: center;
         text-transform: none;
         color:#e4edf0;
         font-weight: 100;
         font-size: 14px;
+        text-align: center;
+        text-decoration: none;
       }
 
       .profile-image{
@@ -181,14 +183,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer" hidden$="{{!signedIn}}">
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <div class="profile-image-container">
-            <a href$="/u/{{user.uid}}">
               <img src="{{user.photoURL}}" class="profile-image">
-            </a>
           </div>
           <div class="profile-name">
-            <a href$="/u/{{user.uid}}">
               {{user.displayName}}
-            </a>
           </div>
           <div class="draw-button-container"> 
             <a href$="/u/{{user.uid}}" class="active-button">
