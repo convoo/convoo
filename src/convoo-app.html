@@ -175,10 +175,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="profile-name">
             {{user.displayName}}
           </div>
-          <div>
+          <!--<div>
             <a href$="/u/{{user.uid}}">My Profile</a>
-          </div>
+          </div>-->
           <div class="draw-button-container">
+            <paper-button class="draw-button" id="my-profile">My Profile</paper-button>
             <paper-button class="draw-button" id="sign-out">Sign Out</paper-button>
           </div>
         </iron-selector>
@@ -256,7 +257,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       listeners: {
-        'sign-out.tap' : '_signOut'
+        'sign-out.tap' : '_signOut',
+        'my-profile.tap' : '_myProfile'
       },
 
       _computeHideWebDropdown: function(wideLayout, signedIn){
@@ -288,6 +290,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _signOut: function(){
         this.$.login.$.loginLogic.signOut();
+      },
+      _myProfile: function(){
+        window.location = "/u/{{user.uid}}"
       },
 
 
