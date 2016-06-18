@@ -204,7 +204,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
           <convoo-home name="home"></convoo-home>
           <convoo-login name="login" signed-in="{{signedIn}}" user="{{user}}" id="login"></convoo-login>
-          <convoo-new-room name="new-room"></convoo-new-room>
+          <convoo-new-room name="new-room" user="{{user}}"></convoo-new-room>
           <convoo-r name="r" room-id="{{subrouteData.id}}"></convoo-r>
         </iron-pages>
 

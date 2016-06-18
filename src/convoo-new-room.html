@@ -10,6 +10,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<script src="../bower_components/slug/slug.js"></script>
 
 <dom-module id="convoo-new-room">
 
@@ -55,7 +57,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="card">
       
-      <paper-input label="Test" value="{{newRoom.test}}"></paper-input>
+      <paper-input label="Name" value="{{newRoom.name}}"></paper-input>
+
+      <paper-textarea label="body" value="{{newRoom.body}}"></paper-textarea>
 
       <paper-button id="create-room" raised on-tap="clicked">Create</paper-button><br>
       
@@ -69,10 +73,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'convoo-new-room',
 
+      user: Object,
+
       clicked: function(){
         this.newRoom.score = 0;
+        this.newRoom.createdBy = this.user.uid;
+        var today = new Date();
+        this.newRoom.createdAt = today.getTime();
+        var roomSlug = slug(this.newRoom.name + " " +  this.user.displayName + " " + today.getUTCDate() + " " + today.toLocaleString("en-us", {month: "short"}) + " " + today.getFullYear());
         // This is saving the data but not giving me access to the recorded object.
-        this.$.newRoomDocument.save("/r/");
+        this.$.newRoomDocument.save("/r/", roomSlug);
+        location.href = "/r/"+roomSlug;
       }
 
     });

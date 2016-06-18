@@ -78,10 +78,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <div class="card">
         <a href="/r/{{item.$key}}" class="room-title">
-          {{item.$key}}
+          {{item.name}}
         </a>
+        <p>
+          {{item.body}}
+        </p>
         <div class="circle">
-        <span>{{item.score}}</span>  
+        <span>{{item.score}}</span>
         </div>
       </div>
       
