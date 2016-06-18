@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 
 <dom-module id="convoo-u">
 
@@ -37,18 +38,42 @@
     </style>
 
     <firebase-document
-        id="thisRoomDocument"
+        id="thisUserDocument"
         app-name="convoofire"
         path="/u/{{userId}}"
         data="{{thisUser}}">
     </firebase-document>
 
+    <firebase-query
+        id="thisUserGetRooms"
+        app-name="convoofire"
+        path="/r"
+        order-by-child="createdBy"
+        equal-to="{{userId}}"
+        data="{{rooms}}">
+    </firebase-query>
 
     <div class="card">
       <h1>{{thisUser.displayName}}</h1>
       <img src$="{{thisUser.photoURL}}">
       
     </div>
+
+    
+    <template is="dom-repeat" items="{{rooms}}">
+      <div class="card">
+        <a href="/r/{{item.$key}}" class="room-title">
+          {{item.name}}
+        </a>
+        <p>
+          {{item.body}}
+        </p>
+        <div class="circle">
+        <span>{{item.score}}</span>
+        </div>
+      </div>
+    </template>
+    
       
 
   </template>
@@ -60,12 +85,7 @@
       is: 'convoo-u',
 
       properties: {
-        userId: String
-      },
-      attached: function(){
-        console.log(this.userId);
-        console.log(this.thisUser);
-        setTimeout(function(){console.log(this.thisUser);}.bind(this),5000);
+        userId: String,
       }
 
     });
