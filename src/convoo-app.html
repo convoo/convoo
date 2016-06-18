@@ -175,6 +175,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="profile-name">
             {{user.displayName}}
           </div>
+          <div>
+            <a href$="/u/{{user.uid}}">My Profile</a>
+          </div>
           <div class="draw-button-container">
             <paper-button class="draw-button" id="sign-out">Sign Out</paper-button>
           </div>
@@ -204,6 +207,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <convoo-login name="login" signed-in="{{signedIn}}" user="{{user}}" id="login"></convoo-login>
           <convoo-new-room name="new-room" user="{{user}}"></convoo-new-room>
           <convoo-r name="r" room-id="{{subrouteData.id}}"></convoo-r>
+          <convoo-u name="u" user-id="{{subrouteData.id}}"></convoo-u>
         </iron-pages>
 
         <a href="/new-room" tabindex="-1" hidden$="{{!signedIn}}">

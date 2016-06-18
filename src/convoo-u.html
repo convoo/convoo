@@ -1,0 +1,75 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-document.html">
+
+<dom-module id="convoo-u">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+        padding: 10px;
+      }
+      .card {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        padding: 16px;
+        margin: 24px;
+        border-radius: 5px;
+        background-color: #2a363b;
+        color: #757575;
+      }
+      .circle {
+        display: inline-block;
+        height: 64px;
+        width: 64px;
+        border-radius: 50%;
+        background: #ddd;
+        line-height: 64px;
+        font-size: 30px;
+        color: #555;
+        text-align: center;
+      }
+      h1 {
+        font-size: 22px;
+        margin: 16px 0;
+        color: #212121;
+      }
+    </style>
+
+    <firebase-document
+        id="thisRoomDocument"
+        app-name="convoofire"
+        path="/u/{{userId}}"
+        data="{{thisUser}}">
+    </firebase-document>
+
+
+    <div class="card">
+      <h1>{{thisUser.displayName}}</h1>
+      <img src$="{{thisUser.photoURL}}">
+      
+    </div>
+      
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'convoo-u',
+
+      properties: {
+        userId: String
+      },
+      attached: function(){
+        console.log(this.userId);
+        console.log(this.thisUser);
+        setTimeout(function(){console.log(this.thisUser);}.bind(this),5000);
+      }
+
+    });
+
+  </script>
+
+</dom-module>
