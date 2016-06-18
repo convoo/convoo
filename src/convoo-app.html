@@ -144,6 +144,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
+    <firebase-app
+      name="convoofire"
+      api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
+      auth-domain="convoofire.firebaseapp.com"
+      database-url="https://convoofire.firebaseio.com">
+    </firebase-app>
+
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -191,15 +198,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <!--<paper-button id="sign-out" class="toolbar-button" hidden$="{{!signedIn}}">Sign out</paper-button>-->
           </app-toolbar>
         </app-header>
-
-
-    <firebase-app
-      name="convoofire"
-      api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
-      auth-domain="convoofire.firebaseapp.com"
-      database-url="https://convoofire.firebaseio.com">
-    </firebase-app>
-
 
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
           <convoo-home name="home"></convoo-home>

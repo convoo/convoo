@@ -10,6 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/login-fire/login-fire.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 
 <dom-module id="convoo-login">
 
@@ -67,9 +68,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         app-name="convoofire"
         twitter
         user="{{user}}"
-        signed-in="{{signedIn}}">
+        signed-in="{{signedIn}}"
+        on-signedin="_saveUser">
       </login-fire>
     </div>
+
+    <firebase-document
+      id="newUserDocument"
+      app-name="convoofire"
+      path="/u/"
+      data="{{newUser}}">
+    </firebase-document>
 
   </template>
 
@@ -93,6 +102,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         user: {
           type: Object,
           notify: true
+        }
+      },
+
+      _saveUser: function(u){
+        if(typeof u.detail.uid != 'undefined'){
+          this.newUser.displayName = u.detail.displayName;
+          this.newUser.photoURL = u.detail.photoURL;
+          this.newUser.providerId = u.detail.providerId;
+          this.newUser.providerData = u.detail.providerData;
+          this.$.newUserDocument.save("/u/", u.detail.uid);
         }
       }
 
