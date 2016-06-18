@@ -57,9 +57,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="card">
       
+      <paper-input label="Url" value="{{newRoom.url}}"></paper-input>
+
       <paper-input label="Name" value="{{newRoom.name}}"></paper-input>
 
-      <paper-textarea label="body" value="{{newRoom.body}}"></paper-textarea>
+      <paper-textarea label="Description" value="{{newRoom.body}}"></paper-textarea>
 
       <paper-button id="create-room" raised on-tap="clicked">Create</paper-button><br>
       
