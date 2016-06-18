@@ -78,10 +78,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .profile-image{
-          width: 50px;
-          height: 50px;
-          border: 1px solid #000;
-          border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        border: 1px solid #000;
+        border-radius: 50%;
       }
 
       .draw-button-container{
@@ -147,6 +147,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         outline: none;
       }
 
+      .draw-button iron-icon {
+        width: 16px;
+        height: 16px;
+        padding-right: 3px;
+      }
+
     </style>
 
     <firebase-app
@@ -175,16 +181,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer" hidden$="{{!signedIn}}">
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <div class="profile-image-container">
-            <img src="{{user.photoURL}}" class="profile-image">
+            <a href$="/u/{{user.uid}}">
+              <img src="{{user.photoURL}}" class="profile-image">
+            </a>
           </div>
           <div class="profile-name">
-            {{user.displayName}}
+            <a href$="/u/{{user.uid}}">
+              {{user.displayName}}
+            </a>
           </div>
           <div class="draw-button-container"> 
             <a href$="/u/{{user.uid}}" class="active-button">
-              <paper-button class="draw-button">My Profile</paper-button>
+              <paper-button class="draw-button">
+                <iron-icon icon="person"></iron-icon>
+                My Profile
+              </paper-button>
             </a>
-            <paper-button class="draw-button" id="sign-out">Sign Out</paper-button>
+            <paper-button class="draw-button" id="sign-out">
+              <iron-icon icon="power-settings-new"></iron-icon>
+              Sign Out
+            </paper-button>
           </div>
         </iron-selector>
       </app-drawer>
