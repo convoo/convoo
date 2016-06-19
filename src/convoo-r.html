@@ -36,10 +36,17 @@
     </style>
 
     <firebase-document
-        id="document"
+        id="thisRoom"
         app-name="convoofire"
         path="/r/{{roomId}}"
         data="{{thisRoom}}">
+    </firebase-document>
+
+    <firebase-document
+        id="createdByUser"
+        app-name="convoofire"
+        path="/u/{{thisRoom.createdBy}}"
+        data="{{createdByUser}}">
     </firebase-document>
 
 
@@ -48,6 +55,11 @@
       <p>{{thisRoom.body}}</p>
       <p>{{thisRoom.url}}</p>
       <p>Score {{thisRoom.score}}</p>
+
+      <div class="creator">
+        <a href$="/u/{{thisRoom.createdBy}}">{{createdByUser.displayName}}</a>
+        <img src$="{{createdByUser.photoURL}}">
+      </div>
       
       <paper-button on-tap="upvote" raised>Upvote</paper-button>
       <paper-button raised on-tap="downvote">Downvote</paper-button>
