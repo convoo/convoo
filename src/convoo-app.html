@@ -10,6 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
@@ -215,8 +216,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-header-layout has-scrolling-region>
         <app-header condenses reveals effects="waterfall">
           <app-toolbar style="height:40px">
-              <!--<paper-icon-button class="menu-button" icon="menu" drawer-toggle hidden$="{{hideDrawerIcon}}"></paper-icon-button>-->
-              <paper-icon-button class="menu-button" icon="menu" drawer-toggle hidden$="{{!signedIn}}"></paper-icon-button>
+              <paper-icon-button class="menu-button" icon="menu" drawer-toggle hidden$="{{hideDrawerIcon}}"></paper-icon-button>
             <div class="toolbar-logo">
               <a href="/" class="toolbar-link flex">
                 <convoo-logo background="red" height="17"></convoo-logo>
@@ -225,8 +225,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a href="/login" hidden$="{{signedIn}}" class="toolbar-link" tabindex="-1">
               <paper-button id="sign-in" class="toolbar-button">Sign In</paper-button>
             </a>
-            <user-menu id="user-menu" hidden$="{{hideWebDropdown}}" user="{{user}}"></user-menu>
-            <!--<paper-button id="sign-out" class="toolbar-button" hidden$="{{!signedIn}}">Sign out</paper-button>-->
+            <convoo-dropdown user="{{user}}" on-signout="_signOut" hidden$="{{hideWebDropdown}}"></convoo-dropdown>
           </app-toolbar>
         </app-header>
 

@@ -1,17 +1,6 @@
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
-<dom-module id="user-menu">
+<dom-module id="convoo-dropdown">
   <template>
     <style>
       :host {
@@ -94,29 +83,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         
     </style>
 <div class="profile-image-container">
-  <img src="{{user.photoURL}}" class="profile-image" hidden$="{{wideLayout}}">
+  <img src="{{user.photoURL}}" class="profile-image" on-tap="_click">
     <div class="pointer"></div>
-  <ul class="drop-down">
+  <ul class="drop-down" hidden="{{hideDropdown}}">
 
     <li>
-      <a href="#">
+      <a href="/">
         <paper-button class="button">
           <img src="../../../images/app-icon-white.svg" class="home-icon">Home
         </paper-button>
       </a>
     </li>
     <li>
-        <a href="#">
+        <a href$="/u/{{user.uid}}">
           <paper-button class="button">
             <iron-icon icon="person" class="person"></iron-icon></br>My Profile
         </paper-button>
         </a></li>
     <li>
       <a href="#">
-         <paper-button class="button">
-           <iron-icon icon="power-settings-new" class="person"></iron-icon>Sign Out
-           </paper-button>
-           </a></li>
+        <paper-button class="button" on-tap="_signOut">
+          <iron-icon icon="power-settings-new" class="person"></iron-icon>Sign Out
+        </paper-button>
+      </a>
+    </li>
   </ul>
 </div>
   
@@ -128,11 +118,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     'use strict';
 
     Polymer({
-      is: 'user-menu',
+      is: 'convoo-dropdown',
 
       properties: {
-        user: Object
+        user: Object,
+        hideDropdown: {
+          type: Boolean,
+          value: true
+        }
       },
+
+      _click: function(){
+        this.hideDropdown = !this.hideDropdown;
+      },
+
+      _signOut: function(){
+        this.fire('signout');
+      }
 
     });
     
