@@ -12,6 +12,12 @@
         padding: 16px;
         margin: 24px;
       }
+      .scrollable-x {
+        overflow-x: scroll;
+      }
+      .list {
+        padding-bottom: 10px;
+      }
     </style>
 
     
@@ -19,7 +25,7 @@
       <convoo-heading>{{listName}}</convoo-heading>
     </template>
 
-    <div class="layout horizontal wrap">
+    <div class="layout horizontal scrollable-x list">
       <template is="dom-repeat" items="{{rooms}}">
         <convoo-room-card room="{{item}}"></convoo-room-card>
       </template>
