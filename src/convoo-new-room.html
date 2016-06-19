@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="convoo_components/convoo-heading.html">
 <script src="../bower_components/slug/slug.js"></script>
 
 <dom-module id="convoo-new-room">
@@ -76,9 +77,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app-name="convoofire"
       path="/r/"
       data="{{newRoom}}">
-  </firebase-document>
+    </firebase-document>
 
-    <h1>Just a little setup</h1>    
+    <convoo-heading>Just a little setup</convoo-heading>    
     <paper-card class="card">
       <div class="card-content horizontal layout">
         <div class="form card-section flex">

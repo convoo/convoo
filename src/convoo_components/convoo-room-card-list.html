@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="convoo-room-card.html">
+<link rel="import" href="convoo-heading.html">
 
 <dom-module id="convoo-room-card-list">
 
@@ -8,8 +9,15 @@
     <style is="custom-style" include="iron-flex iron-flex-alignment">
       :host {
         display: block;
+        padding: 16px;
+        margin: 24px;
       }
     </style>
+
+    
+    <template is="dom-if" if={{listName}}>
+      <convoo-heading>{{listName}}</convoo-heading>
+    </template>
 
     <div class="layout horizontal wrap">
       <template is="dom-repeat" items="{{rooms}}">
@@ -27,6 +35,10 @@
 
       properties: {
         rooms: Array,
+        listName: {
+          type: String,
+          value: null
+        }
       }
 
     });

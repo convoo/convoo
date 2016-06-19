@@ -1,0 +1,46 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="convoo-heading">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+
+      h2{
+        color:#e4edf0;
+        font-weight: 400;
+        font-size: 18px;
+        margin: 0px;
+      }
+
+      hr{
+        opacity: 0.1;
+        margin-bottom: 18px;
+      }
+      
+    </style>
+
+    <h2><content></content></h2>
+    <hr>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'convoo-heading',
+
+    });
+
+  </script>
+
+</dom-module>
+
+
+
+
+

@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 <link rel="import" href="convoo_components/convoo-room-card-list.html">
+<link rel="import" href="convoo_components/convoo-heading.html">
 
 <dom-module id="convoo-u">
 
@@ -53,17 +54,6 @@
         width: 200px;
         font-size: 14px;
       }
-      h2{
-        color:#e4edf0;
-        font-weight: 400;
-        font-size: 18px;
-        margin: 0px;
-      }
-
-      hr{
-        opacity: 0.1;
-        margin-bottom: 18px;
-      }
     </style>
 
     <firebase-document
@@ -88,17 +78,15 @@
       <paper-button class="follow-button">Follow</paper-button>
     </div>
 
-    <div class="container">
-      <h2>Started</h2>
-      <hr>
-      <convoo-room-card-list rooms="{{rooms}}"></convoo-room-card-list>
-    </div>
+    <!--<div class="container">-->
+      <!--<convoo-heading>Started</convoo-heading>-->
+      <convoo-room-card-list rooms="{{rooms}}" list-name="Started"></convoo-room-card-list>
+    <!--</div>-->
 
-        <div class="container">
-      <h2>Active In</h2>
-      <hr>
-      <convoo-room-card-list rooms="{{rooms}}"></convoo-room-card-list>
-    </div>
+    <!--<div class="container">-->
+      <!--<convoo-heading>Active In</convoo-heading>-->
+      <convoo-room-card-list rooms="{{rooms}}" list-name="Active In"></convoo-room-card-list>
+    <!--</div>-->
 
   </template>
 
