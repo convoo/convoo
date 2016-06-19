@@ -11,13 +11,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
 <script src="../bower_components/slug/slug.js"></script>
 
 <dom-module id="convoo-new-room">
 
   <template>
 
-    <style>
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
       :host {
         display: block;
         padding: 10px;
@@ -47,8 +48,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: #212121;
       }
       .form{
-        max-width: 65%;
-        min-width: 300px;
       }
       .image{
         max-width: 35%;
@@ -70,7 +69,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: #e4edf0;
       }
 
-
     </style>
 
     <firebase-document
@@ -80,22 +78,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       data="{{newRoom}}">
   </firebase-document>
 
-<h1>Just a little setup</h1>
-    <div class="card layout horizontal wrap">
-      
-      <div class="form">
-        <paper-input label="Url" value="{{newRoom.url}}"></paper-input>
-        <paper-input label="Name" value="{{newRoom.name}}"></paper-input>
-        <paper-textarea label="Description" value="{{newRoom.body}}"></paper-textarea>
-       
+    <h1>Just a little setup</h1>    
+    <paper-card class="card">
+      <div class="card-content horizontal layout">
+        <div class="form card-section flex">
+          <paper-input label="Url" value="{{newRoom.url}}"></paper-input>
+          <paper-input label="Name" value="{{newRoom.name}}"></paper-input>
+          <paper-textarea label="Description" value="{{newRoom.body}}"></paper-textarea>
+        </div>
+        <div class="image card-section">
+          <img src="../../images/test.png" width="90%">
+          <paper-button id="create-room" raised on-tap="clicked">Create</paper-button>
+        </div>
       </div>
-      <div class="image">
-        <img src="../../images/test.png" width="90%">
-        <paper-button id="create-room" raised on-tap="clicked">Create</paper-button>
-      </div>
-
-
-    </div>
+    </paper-card>
 
   </template>
 
