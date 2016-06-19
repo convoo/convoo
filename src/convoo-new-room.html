@@ -46,6 +46,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 16px 0;
         color: #212121;
       }
+      .form{
+        max-width: 65%;
+        min-width: 300px;
+      }
+      .image{
+        max-width: 35%;
+        text-align: center;
+      }
+      h1{
+        color: #ddd;
+        font-weight: 100;
+        padding-left: 25px;
+        font-size: 20px;
+      }
+      #create-room{
+        width: 100%;
+        background-color: #e74157;
+        height: 38px;
+        font-size: 14px; 
+        text-transform: none;
+        font-weight: 500;
+        color: #e4edf0;
+      }
+
+
     </style>
 
     <firebase-document
@@ -55,16 +80,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       data="{{newRoom}}">
   </firebase-document>
 
-    <div class="card">
+<h1>Just a little setup</h1>
+    <div class="card layout horizontal wrap">
       
-      <paper-input label="Url" value="{{newRoom.url}}"></paper-input>
+      <div class="form">
+        <paper-input label="Url" value="{{newRoom.url}}"></paper-input>
+        <paper-input label="Name" value="{{newRoom.name}}"></paper-input>
+        <paper-textarea label="Description" value="{{newRoom.body}}"></paper-textarea>
+       
+      </div>
+      <div class="image">
+        <img src="../../images/test.png" width="90%">
+        <paper-button id="create-room" raised on-tap="clicked">Create</paper-button>
+      </div>
 
-      <paper-input label="Name" value="{{newRoom.name}}"></paper-input>
 
-      <paper-textarea label="Description" value="{{newRoom.body}}"></paper-textarea>
-
-      <paper-button id="create-room" raised on-tap="clicked">Create</paper-button><br>
-      
     </div>
 
   </template>
