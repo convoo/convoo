@@ -157,7 +157,7 @@
         } else if(this.authUser.follows.indexOf(this.userId) > -1) {
           return;
         } else {
-          this.authUser.follows.append(this.userId);
+          this.authUser.follows.push(this.userId);
         }
         this.$.authedUserDocument.save("/u", this.user.uid);
       },

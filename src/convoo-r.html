@@ -63,6 +63,21 @@
       
       <paper-button on-tap="upvote" raised>Upvote</paper-button>
       <paper-button raised on-tap="downvote">Downvote</paper-button>
+
+    </div>
+
+    <div class="chat">
+      
+      <template is="dom-repeat" items="{{thisRoom.chats}}">
+        <div>
+          {{item.content}}
+        </div>
+      </template>
+
+      
+      <paper-input label="Your message" id="message"></paper-input>
+      
+      <paper-button raised id="send-message" on-tap="_sendMessage">Send</paper-button>
       
     </div>
       
@@ -76,7 +91,26 @@
       is: 'convoo-r',
 
       properties: {
-        roomId: String
+        roomId: String,
+        user: Object
+      },
+
+      _sendMessage: function(){
+        var today = new Date();
+        var thisChat = {
+          sentBy: this.user.uid,
+          content: this.$.message.value,
+          type: "message",
+          sentAt: today.getTime()
+        };
+        if(typeof this.thisRoom.chats === 'undefined'){
+          this.thisRoom.chats = [thisChat];
+        } else {
+          this.thisRoom.chats.push(thisChat);
+        }
+
+        this.$.thisRoom.save("/r",this.roomId);
+        this.$.message.value = '';
       },
 
       upvote: function(e){
@@ -85,7 +119,7 @@
         } else {
           this.thisRoom.score++;
         }
-        this.$.document.save("/r",this.roomId);
+        this.$.thisRoom.save("/r",this.roomId);
       },
 
       downvote: function(e){
@@ -94,7 +128,7 @@
         } else {
           this.thisRoom.score--;
         }
-        this.$.document.save("/r",this.roomId);
+        this.$.thisRoom.save("/r",this.roomId);
       }
 
     });
