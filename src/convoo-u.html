@@ -43,7 +43,7 @@
         position: relative;
         top: -10px
       }
-      .follow-button{
+      .follow-button, .unfollow-button{
         text-transform: none;
         background-color: #e74157;
         color:#e4edf0;
@@ -79,8 +79,14 @@
     <div class="container profile">
       <img src$="{{thisUser.photoURL}}">
       <h1>{{thisUser.displayName}}</h1>
+      <p class="follows-you" hidden$="{{!isFollowed}}">Follows You</p>
       <div class="actions" hidden$="{{hideActions}}">
-        <paper-button class="follow-button" on-tap="_follow">Follow</paper-button>        
+        <div class="follow" hidden$="{{isFollowing}}">
+          <paper-button class="follow-button" on-tap="_follow">Follow</paper-button> 
+        </div>
+        <div class="unfollow" hidden$="{{!isFollowing}}">
+          <paper-button class="unfollow-button" on-tap="_unfollow">Unfollow</paper-button> 
+        </div>
       </div>
     </div>
 
@@ -103,6 +109,14 @@
         hideActions: {
           type: Boolean,
           computed: '_computeHideActions(signedIn, user)'
+        },
+        isFollowing: {
+          type: Boolean,
+          computed: "_computeIsFollowing(userId, authUser)"
+        },
+        isFollowed: {
+          type: Boolean,
+          computed: "_computeIsFollowed(thisUser, user)"
         }
       },
       /**
@@ -113,16 +127,53 @@
       },
 
       /**
+       * Compute whether logged in user is following displayed user
+       */
+      _computeIsFollowing: function(userId, authUser){
+        if(typeof authUser.follows === 'undefined'){
+          return false;
+        }
+        return authUser.follows.indexOf(userId) > -1;
+      },
+
+      /**
+       * Compute whether logged in user is followed by displayed user
+       */
+      _computeIsFollowed: function(thisUser, user){
+        if(typeof thisUser.follows === 'undefined'){
+          return false;
+        }
+        console.log(thisUser);
+        console.log(thisUser.follows.indexOf(user.$key));
+        return thisUser.follows.indexOf(user.$key) > -1;
+      },
+
+      /**
        * Add displayed user to looged in user.follows array
        */
       _follow: function(){
         if(typeof this.authUser.follows === 'undefined'){
           this.authUser.follows = [this.userId];
+        } else if(this.authUser.follows.indexOf(this.userId) > -1) {
+          return;
         } else {
-          this.authUser.append(this.userId);
+          this.authUser.follows.append(this.userId);
         }
-        
-        this.$.authedUserDocument.save("/u", this.user.uid)
+        this.$.authedUserDocument.save("/u", this.user.uid);
+      },
+
+      /**
+       * Remove displayed user from looged in user.follows array
+       */
+      _unfollow: function(){
+        if(typeof this.authUser.follows === 'undefined'){
+          return false;
+        } else if(this.authUser.follows.indexOf(this.userId) < 0){
+          return false;
+        } else {
+          this.authUser.follows.splice(this.authUser.follows.indexOf(this.userId),1);
+        }
+        this.$.authedUserDocument.save("/u", this.user.uid);
       }
 
     });
