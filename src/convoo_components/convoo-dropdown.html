@@ -20,43 +20,107 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             cursor: hand;
             cursor: pointer;
       }
-      .profile-image{
-        height: 25px;
-        width: 25px;
-        position: relative;
-        top: 7px;
-        border-radius: 50%;
-        border: 1px solid firebrick;
-      }
       .pointer{
         width: 5px;
         height: 5px;
         position: relative;
-        background-color: #e74157;
+        background-color: #a42d3d;
         top:5px;
         left: 11px;
         -ms-transform: rotate(45deg); /* IE 9 */
         -webkit-transform: rotate(45deg); /* Safari */
         transform: rotate(45deg);
-        border-top: 2px solid #3a474c;
-        border-left: 2px solid #3a474c;
+        border-top: 3px solid #3a474c;
+        border-left: 3px solid #3a474c;
       }
       .drop-down{
         background-color: #e74157;
-        width: 100px;
-        height: 100px;
+        background-color: #cc394d;
+        width: 60px;
+        height: 187px;
         position: relative;
-        top:100px;
-        left: 5px;
+        top:-6px;
+        left:-23px;
+        border-radius: 3px;
+        color: white;
+        font-size: 0.7em;
+        list-style-type: none;
+        margin-left: 0;
+        padding-left: 1em;
+        text-indent: -1em;
+        text-align: center;
+      }
+      .profile-image{
+        height: 25px;
+        width: 25px;
+        position: relative;;
+        top: 7px;
+        border-radius: 50%;
+        border: 1px solid firebrick;
+      }
+      .profile-image-container{
+        position: relative;
+        width: 25px;
+        height: 25px;
+        top: -8px;
+      }
+      .home-icon{
+        width: 20px;
+        height: 20px;
+        padding: 5px 10px 4px 20px;
+
+      }
+      .drop-down li a {
+        color: white;
+        text-decoration: none;
+      }
+      .button{
+        border: 1px solid #cc394d;
+        background-color: #e74157;
+        display: block;
+        width: 64px;
+        height: 60px;
+        position: relative;
+        left: -10px;
+        margin-bottom: 1px;
+        top: 2px;
+        text-transform: none;
+      }
+      .person{
+        width: 25px;
+        height: 25px;
+        padding: 2px 10px 4px 20px;
       }
         
     </style>
-
+<div class="profile-image-container">
   <img src="{{user.photoURL}}" class="profile-image" hidden$="{{wideLayout}}">
-  <div class="pointer"></div>
-  <!--<ul class="drop-down">
-    <li>Sign Out</li>
-  </ul>-->
+    <div class="pointer"></div>
+  <ul class="drop-down">
+
+    <li>
+      <a href="#">
+        <paper-button class="button">
+          <img src="../../../images/app-icon-white.svg" class="home-icon">Home
+        </paper-button>
+      </a>
+    </li>
+    <li>
+        <a href="#">
+          <paper-button class="button">
+            <iron-icon icon="person" class="person"></iron-icon></br>My Profile
+        </paper-button>
+        </a></li>
+    <li>
+      <a href="#">
+         <paper-button class="button">
+           <iron-icon icon="power-settings-new" class="person"></iron-icon>Sign Out
+           </paper-button>
+           </a></li>
+  </ul>
+</div>
+  
+
 
   </template>
   <script>
