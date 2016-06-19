@@ -60,6 +60,13 @@
         data="{{thisUser}}">
     </firebase-document>
 
+    <firebase-document
+        id="authedUserDocument"
+        app-name="convoofire"
+        path="/u/{{user.uid}}"
+        data="{{authUser}}">
+    </firebase-document>
+
     <firebase-query
         id="thisUserGetRooms"
         app-name="convoofire"
@@ -72,7 +79,9 @@
     <div class="container profile">
       <img src$="{{thisUser.photoURL}}">
       <h1>{{thisUser.displayName}}</h1>
-      <paper-button class="follow-button">Follow</paper-button>
+      <div class="actions" hidden$="{{hideActions}}">
+        <paper-button class="follow-button" on-tap="_follow">Follow</paper-button>        
+      </div>
     </div>
 
     <convoo-room-card-list rooms="{{rooms}}" list-name="Started"></convoo-room-card-list>
@@ -89,6 +98,31 @@
 
       properties: {
         userId: String,
+        user: Object,
+        signedIn: Boolean,
+        hideActions: {
+          type: Boolean,
+          computed: '_computeHideActions(signedIn, user)'
+        }
+      },
+      /**
+       * Don't show actions if logged out or looking at own profile
+       */
+      _computeHideActions: function(signedIn, user){
+        return !signedIn || (signedIn && user.uid == this.userId);
+      },
+
+      /**
+       * Add displayed user to looged in user.follows array
+       */
+      _follow: function(){
+        if(typeof this.authUser.follows === 'undefined'){
+          this.authUser.follows = [this.userId];
+        } else {
+          this.authUser.append(this.userId);
+        }
+        
+        this.$.authedUserDocument.save("/u", this.user.uid)
       }
 
     });
