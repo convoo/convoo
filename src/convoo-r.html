@@ -49,6 +49,13 @@
         data="{{createdByUser}}">
     </firebase-document>
 
+    <firebase-query
+        id="participants"
+        app-name="convoofire"
+        path="/u"
+        data="{{participants}}">
+    </firebase-query>
+
 
     <div class="card">
       <h1>{{thisRoom.name}}</h1>
@@ -61,6 +68,13 @@
         <img src$="{{createdByUser.photoURL}}">
       </div>
       
+      <div class="participants">
+        Participants:
+        <template is="dom-repeat" items="{{participants}}">
+          <img src$="{{item.photoURL}}" alt="{{item.displayName}}">
+        </template>
+      </div>
+
       <paper-button on-tap="upvote" raised>Upvote</paper-button>
       <paper-button raised on-tap="downvote">Downvote</paper-button>
 
@@ -69,15 +83,27 @@
     <div class="chat">
       
       <template is="dom-repeat" items="{{thisRoom.chats}}">
-        <div>
-          {{item.content}}
-        </div>
-      </template>
+        
+        <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
+          <div>
+            {{item.content}}
+          </div>
+        </template>
+        
+        <template is="dom-if" if="{{_checkType(item.type, 'joined')}}">
+          <div>
+            {{item.sentBy}} just joined!
+          </div>
+        </template>
+        
 
+      </template>
       
-      <paper-input label="Your message" id="message"></paper-input>
+      <div class="sendSection" hidden$="{{!signedIn}}">
+        <paper-input label="Your message" id="message"></paper-input>
+        <paper-button raised id="send-message" on-tap="_sendMessage">Send</paper-button>  
+      </div>
       
-      <paper-button raised id="send-message" on-tap="_sendMessage">Send</paper-button>
       
     </div>
       
@@ -92,7 +118,12 @@
 
       properties: {
         roomId: String,
-        user: Object
+        user: Object,
+        signedIn: Boolean
+      },
+
+      _checkType: function(itemType, type){
+        return itemType == type;
       },
 
       _sendMessage: function(){
@@ -107,6 +138,13 @@
           this.thisRoom.chats = [thisChat];
         } else {
           this.thisRoom.chats.push(thisChat);
+        }
+        if(typeof this.thisRoom.participants === 'undefined'){
+          this.thisRoom.participants = [this.user.uid];
+        } else {
+          if(this.thisRoom.participants.indexOf(this.user.uid) < 0){
+            this.thisRoom.participants.push(this.user.uid);
+          }
         }
 
         this.$.thisRoom.save("/r",this.roomId);
@@ -129,6 +167,23 @@
           this.thisRoom.score--;
         }
         this.$.thisRoom.save("/r",this.roomId);
+      },
+
+      attached: function(){
+        if(this.signedIn){
+          var today = new Date();
+          var thisChat = {
+            sentBy: this.user.uid,
+            type: "joined",
+            sentAt: today.getTime()
+          };
+          if(typeof this.thisRoom.chats === 'undefined'){
+            this.thisRoom.chats = [thisChat];
+          } else {
+            this.thisRoom.chats.push(thisChat);
+          }
+          this.$.thisRoom.save("/r",this.roomId);
+        }
       }
 
     });
