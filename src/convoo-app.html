@@ -149,10 +149,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         outline: none;
       }
 
-      .draw-button iron-icon {
+      .draw-button iron-icon, .button-icon {
         width: 16px;
         height: 16px;
         padding-right: 3px;
+        color: #fff;
       }
 
     </style>
@@ -188,7 +189,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="profile-name">
               {{user.displayName}}
           </div>
-          <div class="draw-button-container"> 
+          <div class="draw-button-container">
+            <a href="/" class="active-button">
+              <paper-button class="draw-button">
+                <!--<iron-icon icon="convoo"></iron-icon>-->
+                <img src="../../images/app-icon.svg" alt="Convoo" class="button-icon">
+                Home
+              </paper-button>
+            </a>
             <a href$="/u/{{user.uid}}" class="active-button">
               <paper-button class="draw-button">
                 <iron-icon icon="person"></iron-icon>
@@ -208,7 +216,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header condenses reveals effects="waterfall">
           <app-toolbar style="height:40px">
               <!--<paper-icon-button class="menu-button" icon="menu" drawer-toggle hidden$="{{hideDrawerIcon}}"></paper-icon-button>-->
-              <paper-icon-button class="menu-button" icon="menu" drawer-toggle></paper-icon-button>
+              <paper-icon-button class="menu-button" icon="menu" drawer-toggle hidden$="{{!signedIn}}"></paper-icon-button>
             <div class="toolbar-logo">
               <a href="/" class="toolbar-link flex">
                 <convoo-logo background="red" height="17"></convoo-logo>
