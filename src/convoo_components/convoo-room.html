@@ -85,8 +85,8 @@
           <img src="../../images/arrow-down.svg" class="arrow">
         </div>
         <template is="dom-repeat" items="{{thisRoom.participants}}">
-          <a href$="/u/{{item.id}}">
-            <img src$="/images/users/{{item.id}}" alt="{{item.displayName}}" class="profile-photo">
+          <a href$="/u/{{item}}">
+            <img src$="/images/users/{{item}}" class="profile-photo">
           </a>
         </template>
       </div>
@@ -173,18 +173,17 @@
       },
 
       _sendChat: function(type){
-        console.log(type);
         var today = new Date();
         var thisChat;
         if(type === 'message'){
           thisChat = {
-            sentBy: {
+            "sentBy": {
               "id": this.user.uid,
               "displayName": this.user.displayName
             },
-            content: this.$$("#message").value,
-            type: "message",
-            sentAt: today.getTime()
+            "content": this.$$("#message").value,
+            "type": "message",
+            "sentAt": today.getTime()
           };
 
           if(typeof this.thisRoom.participants === 'undefined'){
@@ -197,14 +196,15 @@
           this.$$("#message").value = '';
 
         } else if(type === 'joined'){
-
+          console.log("attempting to join");
+          var name = this.user.displayName == null ? "Someone" : this.user.displayName;
           thisChat = {
-            sentBy: {
+            "sentBy": {
               "id": this.user.uid,
-              "displayName": this.user.displayName
+              "displayName": name
             },
-            type: "joined",
-            sentAt: today.getTime()
+            "type": "joined",
+            "sentAt": today.getTime()
           };
         }
 
@@ -214,8 +214,13 @@
           this.chats.push(thisChat);
         }
 
-        this.$.thisRoom.save("/r",this.roomId);
-        this.$.chats.save("/chats",this.roomId);
+        if(typeof this.thisRoom.name !== 'undefined'){
+          this.$.thisRoom.save("/r",this.roomId);
+          this.$.chats.save("/chats",this.roomId);
+        } else {
+          console.log("Sorry - the chat couldn't send. Please try again");
+        }
+        
       },
 
       upvote: function(e){
@@ -237,9 +242,11 @@
       },
 
       attached: function(){
-        if(this.signedIn){
-          this._sendChat('joined');
-        }
+        setTimeout(function(){
+          if(this.signedIn){
+            this._sendChat('joined');
+          }
+        }.bind(this), 10000)
       }
 
     });
