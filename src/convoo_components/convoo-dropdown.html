@@ -1,5 +1,3 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-
 <dom-module id="convoo-dropdown">
   <template>
     <style>
@@ -87,7 +85,7 @@
       <div class="profile-image-container">
         
         
-          <img src="{{user.photoURL}}" class="profile-image" on-tap="_click">
+          <img src$="{{user.photoURL}}" class="profile-image" on-tap="_click">
         
         <div class="pointer" hidden="{{hideDropdown}}"></div>
         <ul class="drop-down" hidden="{{hideDropdown}}">
