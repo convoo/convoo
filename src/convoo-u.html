@@ -1,5 +1,4 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="convoo_components/convoo-room-card-list.html">
 
 <dom-module id="convoo-u">
 
@@ -143,8 +142,8 @@
         if(typeof thisUser.follows === 'undefined'){
           return false;
         }
-        console.log(thisUser);
-        console.log(thisUser.follows.indexOf(user.$key));
+        // console.log(thisUser);
+        // console.log(thisUser.follows.indexOf(user.$key));
         return thisUser.follows.indexOf(user.$key) > -1;
       },
 
