@@ -92,7 +92,9 @@
           <img src="../../images/arrow-down.svg" class="arrow">
         </div>
         <template is="dom-repeat" items="{{participants}}">
-          <img src$="{{item.photoURL}}" alt="{{item.displayName}}" class="profile-photo">
+          <a href$="/u/{{item.$key}}">
+            <img src$="{{item.photoURL}}" alt="{{item.displayName}}" class="profile-photo">
+          </a>
         </template>
       </div>
       <div class="user-type-desc">
