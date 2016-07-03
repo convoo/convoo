@@ -308,9 +308,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _pageChanged: function(page) {
-        // load page import on demand.
-        this.importHref(
-          this.resolveUrl('convoo-' + page + '.html'), null, null, true);
+        // load page import on demand except for certain pages in the array
+        if(["login"].indexOf(page) < 0){
+          this.importHref(
+            this.resolveUrl('convoo-' + page + '.html'), null, null, true);
+        }
       },
 
       _signOut: function(){
