@@ -71,45 +71,41 @@
     </firebase-document>
 
     <firebase-document
-        id="createdByUser"
+        id="chats"
         app-name="convoofire"
-        path="/u/{{thisRoom.createdBy}}"
-        data="{{createdByUser}}">
+        path="/chats/{{roomId}}"
+        data="{{chats}}">
     </firebase-document>
 
-    <firebase-query
-        id="participants"
-        app-name="convoofire"
-        path="/u"
-        data="{{participants}}">
-    </firebase-query>
-
+    
+    <template is="dom-if" if={{_checkRepeatable(thisRoom.participants)}}>
       <div class="participants layout horizontal flex">
         <div class="spinner">
           <img src="../../images/arrow-up.svg" class="arrow">
           <img src="../../images/arrow-down.svg" class="arrow">
         </div>
-        <template is="dom-repeat" items="{{participants}}">
-          <a href$="/u/{{item.$key}}">
-            <img src$="{{item.photoURL}}" alt="{{item.displayName}}" class="profile-photo">
+        <template is="dom-repeat" items="{{thisRoom.participants}}">
+          <a href$="/u/{{item.id}}">
+            <img src$="/images/users/{{item.id}}" alt="{{item.displayName}}" class="profile-photo">
           </a>
         </template>
       </div>
       <div class="user-type-desc">
         Contributed
       </div>
+    </template>
 
 
 
     <div class="card">
       <h1>{{thisRoom.name}}</h1>
       <p>{{thisRoom.body}}</p>
-      <p>{{thisRoom.url}}</p>
-      <p>Score {{thisRoom.score}}</p>
+      <p><a href="{{thisRoom.url}}">{{thisRoom.url}}</a></p>
+      <p>Score: {{thisRoom.score}}</p>
 
       <div class="creator">
-        <a href$="/u/{{thisRoom.createdBy}}">{{createdByUser.displayName}}</a>
-        <img src$="{{createdByUser.photoURL}}">
+        <a href$="/u/{{thisRoom.createdBy.id}}">{{thisRoom.createdBy.displayName}}</a>
+        <img src$="/images/users/{{thisRoom.createdBy.id}}">
       </div>
       
 
@@ -121,36 +117,39 @@
 
     <div class="chat">
       
-      <template is="dom-repeat" items="{{thisRoom.chats}}">
-        
-        <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
-          <div>
-            {{item.content}}
-          </div>
+      
+      <template is="dom-if" if={{_checkRepeatable(chats)}}>
+        <template is="dom-repeat" items="{{chats}}">
+          <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
+            <div>
+              <span>
+                {{item.sentBy.displayName}}:
+              </span>
+              <span>
+                {{item.content}}
+              </span>
+            </div>
+          </template>
+          
+          <template is="dom-if" if="{{_checkType(item.type, 'joined')}}">
+            <div>
+              {{item.sentBy.displayName}} just joined!
+            </div>
+          </template>
         </template>
-        
-        <template is="dom-if" if="{{_checkType(item.type, 'joined')}}">
-          <div>
-            {{item.sentBy}} just joined!
-          </div>
-        </template>
-        
-
       </template>
-      
-      <div class="sendSection" hidden$="{{!signedIn}}">
-        <paper-input label="Your message" id="message"></paper-input>
-        <paper-button raised id="send-message" on-tap="_sendMessage">Send</paper-button>  
-      </div>
-      
-      
-    </div>
-      
 
+      <template is="dom-if" if={{signedIn}}>
+        <div class="sendSection">
+          <paper-input label="Your message" id="message"></paper-input>
+          <paper-button raised id="send-message" on-tap="_sendMessage">Send</paper-button>  
+        </div>
+      </template>
+
+    </div>
   </template>
 
   <script>
-
     Polymer({
 
       is: 'convoo-room',
@@ -165,29 +164,58 @@
         return itemType == type;
       },
 
+      _checkRepeatable: function(variable){
+        return typeof variable !== 'undefined' && variable[0] != null;
+      },
+
       _sendMessage: function(){
+        this._sendChat('message');
+      },
+
+      _sendChat: function(type){
+        console.log(type);
         var today = new Date();
-        var thisChat = {
-          sentBy: this.user.uid,
-          content: this.$.message.value,
-          type: "message",
-          sentAt: today.getTime()
-        };
-        if(typeof this.thisRoom.chats === 'undefined'){
-          this.thisRoom.chats = [thisChat];
-        } else {
-          this.thisRoom.chats.push(thisChat);
-        }
-        if(typeof this.thisRoom.participants === 'undefined'){
-          this.thisRoom.participants = [this.user.uid];
-        } else {
-          if(this.thisRoom.participants.indexOf(this.user.uid) < 0){
-            this.thisRoom.participants.push(this.user.uid);
+        var thisChat;
+        if(type === 'message'){
+          thisChat = {
+            sentBy: {
+              "id": this.user.uid,
+              "displayName": this.user.displayName
+            },
+            content: this.$$("#message").value,
+            type: "message",
+            sentAt: today.getTime()
+          };
+
+          if(typeof this.thisRoom.participants === 'undefined'){
+            this.thisRoom.participants = [this.user.uid];
+          } else {
+            if(this.thisRoom.participants.indexOf(this.user.uid) < 0){
+              this.thisRoom.participants.push(this.user.uid);
+            }
           }
+          this.$$("#message").value = '';
+
+        } else if(type === 'joined'){
+
+          thisChat = {
+            sentBy: {
+              "id": this.user.uid,
+              "displayName": this.user.displayName
+            },
+            type: "joined",
+            sentAt: today.getTime()
+          };
+        }
+
+        if(this.chats[0] == null){
+          this.chats = [thisChat];
+        } else {
+          this.chats.push(thisChat);
         }
 
         this.$.thisRoom.save("/r",this.roomId);
-        this.$.message.value = '';
+        this.$.chats.save("/chats",this.roomId);
       },
 
       upvote: function(e){
@@ -210,18 +238,7 @@
 
       attached: function(){
         if(this.signedIn){
-          var today = new Date();
-          var thisChat = {
-            sentBy: this.user.uid,
-            type: "joined",
-            sentAt: today.getTime()
-          };
-          if(typeof this.thisRoom.chats === 'undefined'){
-            this.thisRoom.chats = [thisChat];
-          } else {
-            this.thisRoom.chats.push(thisChat);
-          }
-          this.$.thisRoom.save("/r",this.roomId);
+          this._sendChat('joined');
         }
       }
 
