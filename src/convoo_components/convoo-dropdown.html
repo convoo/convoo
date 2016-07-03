@@ -82,36 +82,39 @@
       }
         
     </style>
-<div class="profile-image-container">
-    <img src="{{user.photoURL}}" class="profile-image" on-tap="_click">
-    <div class="pointer" hidden="{{hideDropdown}}"></div>
-  <ul class="drop-down" hidden="{{hideDropdown}}">
 
-    <li>
-      <a href="/">
-        <paper-button class="button">
-          <img src="../../../images/app-icon-white.svg" class="home-icon">Home
-        </paper-button>
-      </a>
-    </li>
-    <li>
-        <a href$="/u/{{user.uid}}">
-          <paper-button class="button">
-            <iron-icon icon="person" class="person"></iron-icon></br>My Profile
-        </paper-button>
-        </a></li>
-    <li>
-      <a href="#">
-        <paper-button class="button" on-tap="_signOut">
-          <iron-icon icon="power-settings-new" class="person"></iron-icon>Sign Out
-        </paper-button>
-      </a>
-    </li>
-  </ul>
-</div>
-  
+    <template is="dom-if" if={{signedIn}}>
+      <div class="profile-image-container">
+        
+        
+          <img src="{{user.photoURL}}" class="profile-image" on-tap="_click">
+        
+        <div class="pointer" hidden="{{hideDropdown}}"></div>
+        <ul class="drop-down" hidden="{{hideDropdown}}">
 
-
+          <li>
+            <a href="/">
+              <paper-button class="button">
+                <img src="../../../images/app-icon-white.svg" class="home-icon">Home
+              </paper-button>
+            </a>
+          </li>
+          <li>
+              <a href$="/u/{{user.uid}}">
+                <paper-button class="button">
+                  <iron-icon icon="person" class="person"></iron-icon></br>My Profile
+              </paper-button>
+              </a></li>
+          <li>
+            <a href="#">
+              <paper-button class="button" on-tap="_signOut">
+                <iron-icon icon="power-settings-new" class="person"></iron-icon>Sign Out
+              </paper-button>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </template>
   </template>
   <script>
   (function() {
@@ -122,6 +125,7 @@
 
       properties: {
         user: Object,
+        signedIn: Boolean,
         hideDropdown: {
           type: Boolean,
           value: true

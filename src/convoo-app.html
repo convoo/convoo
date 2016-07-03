@@ -185,7 +185,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer" hidden$="{{!signedIn}}">
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <div class="profile-image-container">
-              <img src="{{user.photoURL}}" class="profile-image">
+              <img src$="{{user.photoURL}}" class="profile-image">
           </div>
           <div class="profile-name">
               {{user.displayName}}
@@ -225,7 +225,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <a href="/login" hidden$="{{signedIn}}" class="toolbar-link" tabindex="-1">
               <paper-button id="sign-in" class="toolbar-button">Sign In</paper-button>
             </a>
-            <convoo-dropdown user="{{user}}" on-signout="_signOut" hidden$="{{hideWebDropdown}}"></convoo-dropdown>
+            <convoo-dropdown user="{{user}}" signed-in="{{signedIn}}" on-signout="_signOut" hidden$="{{hideWebDropdown}}"></convoo-dropdown>
           </app-toolbar>
         </app-header>
 
