@@ -298,7 +298,8 @@
         } else {
           console.log("Sorry - the chat couldn't send. Please try again");
         }
-        
+
+        this.$$(".chat-messages").scrollTop = this.$$(".chat-messages").scrollHeight;
       },
 
       upvote: function(e){
