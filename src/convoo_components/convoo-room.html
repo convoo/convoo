@@ -2,10 +2,13 @@
 
   <template>
 
-      <style is="custom-style" include="iron-flex iron-flex-alignment">
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
 
-      :host {
-        display: block;
+      :host{
+        /*@apply(--layout-vertical); //this isn't working so had to add display and flex dir' */
+        height: 100%;
+        display: flex;
+        flex-direction: column;
         padding: 0px;
       }
       .card {
@@ -61,6 +64,40 @@
         padding: 5px;
         color: #969696;
       }
+
+      .room-name {
+        padding-left: 10px;
+      }
+
+      .room-body {
+        padding: 5px;
+      }
+
+      .room-link {
+        padding: 5px;
+      }
+
+      .chat {
+        overflow: scroll;
+      }
+
+      .chat-item {
+        padding: 3px;
+      }
+
+      .chat-message .chat-content {
+        padding-left: 10px;
+      }
+
+      .chat-message .chat-author {
+        font-style: italic;
+      }
+
+      .chat-author-img {
+        border-radius: 5px;
+        height: 20px;
+        width: 20px;
+      }
     </style>
 
     <firebase-document
@@ -79,7 +116,7 @@
 
     
     <template is="dom-if" if={{_checkRepeatable(thisRoom.participants)}}>
-      <div class="participants layout horizontal flex">
+      <div class="participants layout horizontal">
         <div class="spinner">
           <img src="../../images/arrow-up.svg" class="arrow">
           <img src="../../images/arrow-down.svg" class="arrow">
@@ -97,56 +134,78 @@
 
 
 
-    <div class="card">
-      <h1>{{thisRoom.name}}</h1>
-      <p>{{thisRoom.body}}</p>
-      <p><a href="{{thisRoom.url}}">{{thisRoom.url}}</a></p>
-      <p>Score: {{thisRoom.score}}</p>
-
-      <div class="creator">
-        <a href$="/u/{{thisRoom.createdBy.id}}">{{thisRoom.createdBy.displayName}}</a>
-        <img src$="/images/users/{{thisRoom.createdBy.id}}">
+    <div class="room-info card">
+      <div class="layout horizontal">
+        <div class="voting">
+          <div>
+            <a on-tap="upvote"><img src="../../images/arrow-up.svg" class="arrow"></a>
+          </div>
+          <div>
+            {{thisRoom.score}}
+          </div>
+          <div>
+            <a on-tap="downvote"><img src="../../images/arrow-down.svg" class="arrow"></a>
+          </div>
+        </div>
+        <div class="flex">
+          <span class="room-name">{{thisRoom.name}}</span>
+          <span class="room-link">
+            <a href="{{thisRoom.url}}">link</a>
+          </span>
+        </div>
+        <div class="creator">
+          By
+          <a href$="/u/{{thisRoom.createdBy.id}}">{{thisRoom.createdBy.displayName}}</a>
+          <a href$="/u/{{thisRoom.createdBy.id}}"><img src$="/images/users/{{thisRoom.createdBy.id}}"></a>
+        </div>
       </div>
-      
-
-
-      <paper-button on-tap="upvote" raised>Upvote</paper-button>
-      <paper-button raised on-tap="downvote">Downvote</paper-button>
-
+      <div class="room-body">
+        {{thisRoom.body}}
+      </div>
     </div>
 
-    <div class="chat">
-      
-      
+    <div class="chat-messages card flex">
       <template is="dom-if" if={{_checkRepeatable(chats)}}>
         <template is="dom-repeat" items="{{chats}}">
           <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
-            <div>
-              <span>
-                {{item.sentBy.displayName}}:
-              </span>
-              <span>
-                {{item.content}}
-              </span>
+            <div class="chat-item chat-message">
+              <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
+                <div class="chat-author">
+                  <span class="chat-author-img-span">
+                    <img src$="/images/users/{{item.sentBy.id}}" alt="{{item.sentBy.displayName}}" class="chat-author-img">
+                  </span>
+                  {{item.sentBy.displayName}}:
+                </div>
+              </template>
+              <div class="chat-content layout horizontal">
+                
+                <div class="chat-content-message flex">
+                  {{item.content}}
+                </div>
+                <div class="chat-tangent-link end">
+                  <small>
+                    <a href="">Go on a tangent</a>
+                  </small>
+                </div>
+              </div>
             </div>
           </template>
           
           <template is="dom-if" if="{{_checkType(item.type, 'joined')}}">
-            <div>
+            <div class="chat-item chat-joined">
               {{item.sentBy.displayName}} just joined!
             </div>
           </template>
         </template>
       </template>
+    </div>
 
-      <template is="dom-if" if={{signedIn}}>
-        <div class="sendSection">
+    <template is="dom-if" if={{signedIn}}>
+        <div class="sendSection card">
           <paper-input label="Your message" id="message"></paper-input>
           <paper-button raised id="send-message" on-tap="_sendMessage">Send</paper-button>  
         </div>
       </template>
-
-    </div>
   </template>
 
   <script>
@@ -158,6 +217,16 @@
         roomId: String,
         user: Object,
         signedIn: Boolean
+      },
+
+      _sameAuthor: function(array,i){
+        if(i == 0){
+          return false;
+        } else if(array[i].type == "message" && array[i-1].type == "message" && array[i].sentBy.id == array[i-1].sentBy.id){
+          return true;
+        } else {
+          return false;
+        }
       },
 
       _checkType: function(itemType, type){
