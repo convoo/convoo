@@ -201,9 +201,13 @@
     </div>
 
     <template is="dom-if" if={{signedIn}}>
-        <div class="sendSection card">
-          <paper-input label="Your message" id="message"></paper-input>
-          <paper-button raised id="send-message" on-tap="_sendMessage">Send</paper-button>  
+        <div class="sendSection card layout horizontal">
+          <div class="flex">
+            <paper-input label="Your message" id="message" on-keypress="_messageKey"></paper-input>  
+          </div>
+          <div>
+            <paper-button raised id="send-message" on-tap="_sendMessage">Send</paper-button>
+          </div>
         </div>
       </template>
   </template>
@@ -235,6 +239,12 @@
 
       _checkRepeatable: function(variable){
         return typeof variable !== 'undefined' && variable[0] != null;
+      },
+
+      _messageKey: function(e){
+        if(e.keyCode == 13){
+          this._sendMessage();
+        }
       },
 
       _sendMessage: function(){
