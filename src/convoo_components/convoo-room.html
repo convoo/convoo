@@ -182,9 +182,13 @@
                 <div class="chat-content-message flex">
                   {{item.content}}
                 </div>
-                <div class="chat-tangent-link end">
+                <!--This section should only appear when hovering over the chat item-->
+                <div class="chat-tangent-link end"> 
                   <small>
                     <a href="">Go on a tangent</a>
+                  </small>
+                  <small>
+                    {{item.sentAt}}
                   </small>
                 </div>
               </div>
