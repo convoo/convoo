@@ -227,6 +227,16 @@
         signedIn: Boolean
       },
 
+      observers: [
+        '_updateChats(chats)'
+      ],
+
+      _updateChats: function(chats){
+        setTimeout(function(){
+          this.$$(".chat-messages").scrollTop = this.$$(".chat-messages").scrollHeight +100;
+        }.bind(this),10);
+      },
+
       _sameAuthor: function(array,i){
         if(i == 0){
           return false;
@@ -302,8 +312,6 @@
         } else {
           console.log("Sorry - the chat couldn't send. Please try again");
         }
-
-        this.$$(".chat-messages").scrollTop = this.$$(".chat-messages").scrollHeight;
       },
 
       upvote: function(e){
