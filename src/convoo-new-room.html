@@ -63,8 +63,8 @@
     <firebase-document
       id="newRoomDocument"
       app-name="convoofire"
-      path="/r/"
-      data="{{newRoom}}">
+      path="/r/{{roomSlug}}"
+      data="{{savedNewRoom}}">
     </firebase-document>
 
     <convoo-heading>Just a little setup</convoo-heading>    
@@ -90,17 +90,26 @@
 
       is: 'convoo-new-room',
 
-      user: Object,
+      properties: {
+        user: Object,
+        newRoom: {
+          type: Object,
+          value: {}
+        },
+      },
 
       clicked: function(){
         this.newRoom.score = 0;
-        this.newRoom.createdBy = this.user.uid;
+        this.newRoom.createdBy = {
+          "id": this.user.uid,
+          "displayName": this.user.displayName
+        };
         var today = new Date();
         this.newRoom.createdAt = today.getTime();
-        var roomSlug = slug(this.newRoom.name + " " +  this.user.displayName + " " + today.getUTCDate() + " " + today.toLocaleString("en-us", {month: "short"}) + " " + today.getFullYear());
-        // This is saving the data but not giving me access to the recorded object.
-        this.$.newRoomDocument.save("/r/", roomSlug);
-        location.href = "/r/"+roomSlug;
+        this.roomSlug = slug(this.newRoom.name + " " +  this.user.displayName + " " + today.getUTCDate() + " " + today.toLocaleString("en-us", {month: "short"}) + " " + today.getFullYear());
+        this.savedNewRoom = this.newRoom;
+        this.$.newRoomDocument.save("/r/", this.roomSlug);
+        location.href = "/r/"+this.roomSlug;
       }
 
     });

@@ -18,7 +18,7 @@
     "paper-icon-button": "PolymerElements/paper-icon-button#~1.1.1",
     "polymer": "polymer/polymer#^1.4.0",
     "polymerfire": "firebase/polymerfire#^0.9.2",
-    "login-fire": "master",
+    "login-fire": "#^0.1.0",
     "paper-fab": "PolymerElements/paper-fab#^1.2.0",
     "slug": "^0.9.1",
     "paper-card": "PolymerElements/paper-card#^1.1.1"

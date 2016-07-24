@@ -2,16 +2,19 @@
 
   <template>
 
-      <style is="custom-style" include="iron-flex iron-flex-alignment">
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
 
-      :host {
-        display: block;
+      :host{
+        /*@apply(--layout-vertical); //this isn't working so had to add display and flex dir' */
+        height: 100%;
+        display: flex;
+        flex-direction: column;
         padding: 0px;
       }
       .card {
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
         padding: 16px;
-        margin: 24px;
+        margin: 5px 24px;
         border-radius: 5px;
         background-color: #2a363b;
         color: #757575;
@@ -61,6 +64,40 @@
         padding: 5px;
         color: #969696;
       }
+
+      .room-name {
+        padding-left: 10px;
+      }
+
+      .room-body {
+        padding: 5px;
+      }
+
+      .room-link {
+        padding: 5px;
+      }
+
+      .chat-messages {
+        overflow: scroll;
+      }
+
+      .chat-item {
+        padding: 3px;
+      }
+
+      .chat-message .chat-content {
+        padding-left: 10px;
+      }
+
+      .chat-message .chat-author {
+        font-style: italic;
+      }
+
+      .chat-author-img {
+        border-radius: 5px;
+        height: 20px;
+        width: 20px;
+      }
     </style>
 
     <firebase-document
@@ -71,86 +108,115 @@
     </firebase-document>
 
     <firebase-document
-        id="createdByUser"
+        id="chats"
         app-name="convoofire"
-        path="/u/{{thisRoom.createdBy}}"
-        data="{{createdByUser}}">
+        path="/chats/{{roomId}}"
+        data="{{chats}}">
     </firebase-document>
 
-    <firebase-query
-        id="participants"
-        app-name="convoofire"
-        path="/u"
-        data="{{participants}}">
-    </firebase-query>
-
-      <div class="participants layout horizontal flex">
+    
+    <template is="dom-if" if={{_checkRepeatable(thisRoom.participants)}}>
+      <div class="participants layout horizontal">
         <div class="spinner">
           <img src="../../images/arrow-up.svg" class="arrow">
           <img src="../../images/arrow-down.svg" class="arrow">
         </div>
-        <template is="dom-repeat" items="{{participants}}">
-          <a href$="/u/{{item.$key}}">
-            <img src$="{{item.photoURL}}" alt="{{item.displayName}}" class="profile-photo">
+        <template is="dom-repeat" items="{{thisRoom.participants}}">
+          <a href$="/u/{{item}}">
+            <img src$="/images/users/{{item}}" class="profile-photo">
           </a>
         </template>
       </div>
       <div class="user-type-desc">
         Contributed
       </div>
+    </template>
 
 
 
-    <div class="card">
-      <h1>{{thisRoom.name}}</h1>
-      <p>{{thisRoom.body}}</p>
-      <p>{{thisRoom.url}}</p>
-      <p>Score {{thisRoom.score}}</p>
-
-      <div class="creator">
-        <a href$="/u/{{thisRoom.createdBy}}">{{createdByUser.displayName}}</a>
-        <img src$="{{createdByUser.photoURL}}">
+    <div class="room-info card">
+      <div class="layout horizontal">
+        <div class="voting">
+          <div>
+            <a on-tap="upvote"><img src="../../images/arrow-up.svg" class="arrow"></a>
+          </div>
+          <div>
+            {{thisRoom.score}}
+          </div>
+          <div>
+            <a on-tap="downvote"><img src="../../images/arrow-down.svg" class="arrow"></a>
+          </div>
+        </div>
+        <div class="flex">
+          <span class="room-name">{{thisRoom.name}}</span>
+          <span class="room-link">
+            <a href="{{thisRoom.url}}">link</a>
+          </span>
+        </div>
+        <div class="creator">
+          By
+          <a href$="/u/{{thisRoom.createdBy.id}}">{{thisRoom.createdBy.displayName}}</a>
+          <a href$="/u/{{thisRoom.createdBy.id}}"><img src$="/images/users/{{thisRoom.createdBy.id}}"></a>
+        </div>
       </div>
-      
-
-
-      <paper-button on-tap="upvote" raised>Upvote</paper-button>
-      <paper-button raised on-tap="downvote">Downvote</paper-button>
-
+      <div class="room-body">
+        {{thisRoom.body}}
+      </div>
     </div>
 
-    <div class="chat">
-      
-      <template is="dom-repeat" items="{{thisRoom.chats}}">
-        
-        <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
-          <div>
-            {{item.content}}
-          </div>
+    <div class="chat-messages card flex">
+      <template is="dom-if" if={{_checkRepeatable(chats)}}>
+        <template is="dom-repeat" items="{{chats}}">
+          <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
+            <div class="chat-item chat-message">
+              <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
+                <div class="chat-author">
+                  <span class="chat-author-img-span">
+                    <img src$="/images/users/{{item.sentBy.id}}" alt="{{item.sentBy.displayName}}" class="chat-author-img">
+                  </span>
+                  {{item.sentBy.displayName}}:
+                </div>
+              </template>
+              <div class="chat-content layout horizontal">
+                
+                <div class="chat-content-message flex">
+                  {{item.content}}
+                </div>
+                <!--This section should only appear when hovering over the chat item-->
+                <div class="chat-tangent-link end"> 
+                  <small>
+                    <a href="">Go on a tangent</a>
+                  </small>
+                  <small>
+                    {{item.sentAt}}
+                  </small>
+                </div>
+              </div>
+            </div>
+          </template>
+          
+          <template is="dom-if" if="{{_checkType(item.type, 'joined')}}">
+            <div class="chat-item chat-joined">
+              {{item.sentBy.displayName}} just joined!
+            </div>
+          </template>
         </template>
-        
-        <template is="dom-if" if="{{_checkType(item.type, 'joined')}}">
-          <div>
-            {{item.sentBy}} just joined!
-          </div>
-        </template>
-        
-
       </template>
-      
-      <div class="sendSection" hidden$="{{!signedIn}}">
-        <paper-input label="Your message" id="message"></paper-input>
-        <paper-button raised id="send-message" on-tap="_sendMessage">Send</paper-button>  
-      </div>
-      
-      
     </div>
-      
 
+    <template is="dom-if" if={{signedIn}}>
+        <div class="sendSection card layout horizontal">
+          <div class="flex">
+            <paper-input label="Your message" id="message" on-keypress="_messageKey"></paper-input>  
+          </div>
+          <div>
+            <paper-button raised id="send-message" on-tap="_sendMessage">Send</paper-button>
+          </div>
+        </div>
+      </template>
   </template>
 
   <script>
-
     Polymer({
 
       is: 'convoo-room',
@@ -161,33 +227,91 @@
         signedIn: Boolean
       },
 
+      observers: [
+        '_updateChats(chats)'
+      ],
+
+      _updateChats: function(chats){
+        setTimeout(function(){
+          this.$$(".chat-messages").scrollTop = this.$$(".chat-messages").scrollHeight +100;
+        }.bind(this),10);
+      },
+
+      _sameAuthor: function(array,i){
+        if(i == 0){
+          return false;
+        } else if(array[i].type == "message" && array[i-1].type == "message" && array[i].sentBy.id == array[i-1].sentBy.id){
+          return true;
+        } else {
+          return false;
+        }
+      },
+
       _checkType: function(itemType, type){
         return itemType == type;
       },
 
-      _sendMessage: function(){
-        var today = new Date();
-        var thisChat = {
-          sentBy: this.user.uid,
-          content: this.$.message.value,
-          type: "message",
-          sentAt: today.getTime()
-        };
-        if(typeof this.thisRoom.chats === 'undefined'){
-          this.thisRoom.chats = [thisChat];
-        } else {
-          this.thisRoom.chats.push(thisChat);
+      _checkRepeatable: function(variable){
+        return typeof variable !== 'undefined' && variable[0] != null;
+      },
+
+      _messageKey: function(e){
+        if(e.keyCode == 13){
+          this._sendMessage();
         }
-        if(typeof this.thisRoom.participants === 'undefined'){
-          this.thisRoom.participants = [this.user.uid];
-        } else {
-          if(this.thisRoom.participants.indexOf(this.user.uid) < 0){
-            this.thisRoom.participants.push(this.user.uid);
+      },
+
+      _sendMessage: function(){
+        this._sendChat('message');
+      },
+
+      _sendChat: function(type){
+        var today = new Date();
+        var thisChat;
+        if(type === 'message'){
+          thisChat = {
+            "sentBy": {
+              "id": this.user.uid,
+              "displayName": this.user.displayName
+            },
+            "content": this.$$("#message").value,
+            "type": "message",
+            "sentAt": today.getTime()
+          };
+
+          if(typeof this.thisRoom.participants === 'undefined'){
+            this.thisRoom.participants = [this.user.uid];
+          } else {
+            if(this.thisRoom.participants.indexOf(this.user.uid) < 0){
+              this.thisRoom.participants.push(this.user.uid);
+            }
           }
+          this.$$("#message").value = '';
+
+        } else if(type === 'joined'){
+          var name = this.user.displayName == null ? "Someone" : this.user.displayName;
+          thisChat = {
+            "sentBy": {
+              "id": this.user.uid,
+              "displayName": name
+            },
+            "type": "joined",
+            "sentAt": today.getTime()
+          };
         }
 
-        this.$.thisRoom.save("/r",this.roomId);
-        this.$.message.value = '';
+        if(this.chats[0] == null){
+          this.chats = [thisChat];
+        } else {
+          this.chats.push(thisChat);
+        }
+
+        if(typeof this.thisRoom.name !== 'undefined'){
+          this.$.thisRoom.save("/r",this.roomId);
+          this.$.chats.save("/chats",this.roomId);
+        } else {
+          console.log("Sorry - the chat couldn't send. Please try again");
+        }
       },
 
       upvote: function(e){
@@ -209,20 +333,11 @@
       },
 
       attached: function(){
-        if(this.signedIn){
-          var today = new Date();
-          var thisChat = {
-            sentBy: this.user.uid,
-            type: "joined",
-            sentAt: today.getTime()
-          };
-          if(typeof this.thisRoom.chats === 'undefined'){
-            this.thisRoom.chats = [thisChat];
-          } else {
-            this.thisRoom.chats.push(thisChat);
+        setTimeout(function(){
+          if(this.signedIn){
+            this._sendChat('joined');
           }
-          this.$.thisRoom.save("/r",this.roomId);
-        }
+        }.bind(this), 10000)
       }
 
     });

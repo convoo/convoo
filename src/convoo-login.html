@@ -1,4 +1,4 @@
-<link rel="import" href="../bower_components/login-fire/login-fire.html">
+<link rel="import" href="../bower_components/login-fire/social-login-fire.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
 
 <dom-module id="convoo-login">
@@ -40,10 +40,6 @@
         color: #ddd;
       }
 
-      /*TODO: This should be in the component */
-      #loginLogic{
-        max-width: 400px;
-      }
       #square-logo{
         padding-bottom: 45px;
       }
@@ -52,14 +48,14 @@
     <div class="card" hidden$="{{signedIn}}">
       <img src="../images/app-icon.svg" width="100px" height="100px" id="square-logo">
       <h1>Let's get this conversation started</h1>
-      <login-fire
+      <social-login-fire
         id="loginLogic"
         app-name="convoofire"
         twitter
         user="{{user}}"
         signed-in="{{signedIn}}"
         on-signedin="_saveUser">
-      </login-fire>
+      </social-login-fire>
     </div>
 
     <firebase-document
