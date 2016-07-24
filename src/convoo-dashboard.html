@@ -1,0 +1,55 @@
+<link rel="import" href="convoo_components/convoo-room.html">
+
+<dom-module id="convoo-dashboard">
+
+  <template>
+
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+    </style>
+
+    <firebase-query
+        id="query"
+        app-name="convoofire"
+        path="/r"
+        data="{{allRooms}}"
+        limit-to-last="10">
+    </firebase-query>
+
+    <div class="layout horizontal wrap">
+      <template is="dom-repeat" items="{{allRooms}}">
+        
+        <template is="dom-if" if={{_firstIndex(index)}}>
+          <convoo-room class="flex" room-id="{{item.$key}}" signed-in="{{signedIn}}" user="{{user}}"></convoo-room>
+        </template>
+        <template is="dom-if" if={{!_firstIndex(index)}}>
+          <convoo-room room-id="{{item.$key}}" signed-in="{{signedIn}}" user="{{user}}"></convoo-room>
+        </template>
+        
+        
+        
+      </template>
+    </div>
+    
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'convoo-dashboard',
+
+      properties: {
+        user: Object,
+        signedIn: Boolean
+      },
+
+      _firstIndex: function(i){
+        return i == 0;
+      }
+
+    });
+
+  </script>
+
+</dom-module>
