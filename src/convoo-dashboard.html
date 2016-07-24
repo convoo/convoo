@@ -2,6 +2,16 @@
 
 <dom-module id="convoo-dashboard">
 
+  <style>
+    .container {
+      height: 100%;
+      overflow-x: scroll;
+    }
+    convoo-room {
+      min-width: 400px;
+    }
+  </style>
+
   <template>
 
     <style is="custom-style" include="iron-flex iron-flex-alignment">
@@ -15,7 +25,7 @@
         limit-to-last="10">
     </firebase-query>
 
-    <div class="layout horizontal">
+    <div class="layout horizontal container">
       <template is="dom-repeat" items="{{allRooms}}">
         
         <template is="dom-if" if={{_firstIndex(index)}}>
