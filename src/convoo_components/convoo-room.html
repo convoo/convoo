@@ -240,8 +240,6 @@
       },
 
       _sameAuthor: function(array,i){
-        console.log(array);
-        console.log(i);
         if(i == 0){
           return false;
         } else if(array[i].type == "message" && array[i-1].type == "message" && array[i].sentBy.id == array[i-1].sentBy.id){
