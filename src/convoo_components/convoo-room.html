@@ -14,10 +14,8 @@
         padding: 0px;
       }
       .card {
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
         padding: 16px;
-        margin: 5px 24px;
-        border-radius: 5px;
+        margin: 0px;
         background-color: #2a363b;
         color: #757575;
       }
@@ -45,21 +43,11 @@
         background-color: #1d2629;
         margin-right: 5px;
       }
-      .participants{
-        background-color: #2a363b;
-        width: 100%;
-        padding: 10px;
-        height: 32px
+      
+      .room-info{
+        display:none;
       }
-      .spinner{
-        width: 10px;
-        padding-right: 10px;
-        line-height: 1.0;
-      }
-      .arrow{
-        height: 5px;
-        width: 10px;
-      }
+
       .user-type-desc{
         width: 100%;
         font-size: 11px;
@@ -80,11 +68,16 @@
       }
 
       .chat-messages {
-        overflow: scroll;
+        overflow: auto;
+        max-width:220px;
+      }
+
+      .sendSection{
+        max-width:220px;
       }
 
       .chat-item {
-        padding: 3px;
+        padding: 3px 3px 6px 3px;
       }
 
       .chat-message .chat-content {
@@ -95,11 +88,75 @@
         font-style: italic;
       }
 
-      .chat-author-img {
-        border-radius: 5px;
-        height: 20px;
-        width: 20px;
+      .participants{
+        position: relative;
+        background-color: #2a363b;
+        padding: 10px;
+        height: 32px;
       }
+
+      .chat-text{
+        padding-left:10px;
+        position:relative;
+        top:-4px;
+      }
+      .chat-profile-image{
+        border-radius:50%;
+        width:32px;
+        height:32px;
+        border: 1px solid transparent;
+      }
+      
+      .chat-profile-image:hover{
+        cursor:hand;
+        cursor:pointer;
+        border: 1px solid black;
+      }
+
+      .chat-name-date{
+        font-size:0.8em;
+        font-weight: 500;
+        color:white;
+        letter-spacing: 0.03em;
+      }
+      .chat-name:hover{
+        text-decoration:underline;
+        cursor:hand;
+        cursor:pointer;
+      }
+
+      .chat-time{
+        color:#d4d7d8;
+        font-size:0.65em;
+        font-weight: 100;
+        padding-left:5px;
+        letter-spacing: 0.1em;
+      }
+      .chat-message{
+        color:#d4d7d8;
+        font-size:0.8em;
+        font-weight: 100;
+      }
+      .flex-horizontal {
+        @apply(--layout-horizontal);
+      }
+      .flexchild {
+        @apply(--layout-flex);
+      }
+      ::-webkit-scrollbar
+      {
+        width: 5px;  /* for vertical scrollbars */
+        height: 5px; /* for horizontal scrollbars */
+      }
+      ::-webkit-scrollbar-track
+      {
+        background: rgba(0, 0, 0, 0.1);
+      }
+      ::-webkit-scrollbar-thumb
+      {
+        background: rgba(0, 0, 0, 0.2);
+      }
+
     </style>
 
     <firebase-document
@@ -119,18 +176,11 @@
     
     <template is="dom-if" if={{_checkRepeatable(thisRoom.participants)}}>
       <div class="participants layout horizontal">
-        <div class="spinner">
-          <img src="../../images/arrow-up.svg" class="arrow">
-          <img src="../../images/arrow-down.svg" class="arrow">
-        </div>
         <template is="dom-repeat" items="{{thisRoom.participants}}">
           <a href$="/u/{{item}}">
             <img src$="/images/users/{{item}}" class="profile-photo">
           </a>
         </template>
-      </div>
-      <div class="user-type-desc">
-        Contributed
       </div>
     </template>
 
@@ -170,36 +220,37 @@
       <template is="dom-if" if={{_checkRepeatable(chats)}}>
         <template is="dom-repeat" items="{{chats}}">
           <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
-            <div class="chat-item chat-message">
+          
+            <div class="chat-item flex-horizontal">
               <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
-                <div class="chat-author">
-                  <span class="chat-author-img-span">
-                    <img src$="/images/users/{{item.sentBy.id}}" alt="{{item.sentBy.displayName}}" class="chat-author-img">
-                  </span>
-                  {{item.sentBy.displayName}}:
-                </div>
+              
+                    <img src="http://pbs.twimg.com/profile_images/681558455371612160/c3jfI-c1_normal.jpg" alt="{{item.sentBy.displayName}}" class="chat-profile-image">      
+                    <div class="chat-text flexchild"> 
+                      <div class="chat-name-date"><span class="chat-name">{{item.sentBy.displayName}}</span><span class="chat-time">10:02AM</span></div>
+                      <div class="chat-message">{{item.content}}</div>
+                    </div>
               </template>
-              <div class="chat-content layout horizontal">
-                
-                <div class="chat-content-message flex">
-                  {{item.content}}
-                </div>
                 <!--This section should only appear when hovering over the chat item-->
-                <div class="chat-tangent-link end"> 
+                <!--<div class="chat-tangent-link end"> 
                   <small>
                     <a href="">Go on a tangent</a>
                   </small>
                   <small>
                     {{item.sentAt}}
                   </small>
-                </div>
-              </div>
+                </div>-->
             </div>
+
+
           </template>
           
           <template is="dom-if" if="{{_checkType(item.type, 'joined')}}">
-            <div class="chat-item chat-joined">
-              {{item.sentBy.displayName}} just joined!
+            <div class="chat-item flex-horizontal">
+              <img src="http://pbs.twimg.com/profile_images/741290730170122240/abfazODg_normal.jpg" class="chat-profile-image">
+              <div class="chat-text flexchild">  
+                <div class="chat-name-date"><span class="chat-name">{{item.sentBy.displayName}}</span><span class="chat-time">10:02AM</span></div> 
+                <div class="chat-message">just joined!</div>
+              </div>
             </div>
           </template>
         </template>
