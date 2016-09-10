@@ -119,6 +119,12 @@
         color:white;
         letter-spacing: 0.03em;
       }
+      .chat-name{
+        color:white;
+        text-decoration:none;
+        cursor:hand;
+        cursor:pointer;
+      }
       .chat-name:hover{
         text-decoration:underline;
         cursor:hand;
@@ -233,7 +239,7 @@
                   <img src="http://pbs.twimg.com/profile_images/681558455371612160/c3jfI-c1_normal.jpg" alt="{{item.sentBy.displayName}}" class="chat-profile-image">      
                 </a>
                 <div class="chat-text flexchild"> 
-                  <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}"><span class="chat-name">{{item.sentBy.displayName}}</span></a><span class="chat-time">10:02AM</span></div>
+                  <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a><span class="chat-time">10:02AM</span></div>
                   <div class="chat-message">{{item.content}}</div>
                 </div>
               </template>
@@ -257,7 +263,7 @@
                 <img src="http://pbs.twimg.com/profile_images/741290730170122240/abfazODg_normal.jpg" class="chat-profile-image">
               </a>
               <div class="chat-text flexchild">  
-                <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}"><span class="chat-name">{{item.sentBy.displayName}}</span></a><span class="chat-time">10:02AM</span></div> 
+                <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a><span class="chat-time">10:02AM</span></div> 
                 <div class="chat-message">just joined!</div>
               </div>
             </div>
