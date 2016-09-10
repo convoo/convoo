@@ -229,12 +229,13 @@
           
             <div class="chat-item flex-horizontal">
               <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
-              
-                    <img src="http://pbs.twimg.com/profile_images/681558455371612160/c3jfI-c1_normal.jpg" alt="{{item.sentBy.displayName}}" class="chat-profile-image">      
-                    <div class="chat-text flexchild"> 
-                      <div class="chat-name-date"><span class="chat-name">{{item.sentBy.displayName}}</span><span class="chat-time">10:02AM</span></div>
-                      <div class="chat-message">{{item.content}}</div>
-                    </div>
+                <a href$="/u/{{item.sentBy.id}}">
+                  <img src="http://pbs.twimg.com/profile_images/681558455371612160/c3jfI-c1_normal.jpg" alt="{{item.sentBy.displayName}}" class="chat-profile-image">      
+                </a>
+                <div class="chat-text flexchild"> 
+                  <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}"><span class="chat-name">{{item.sentBy.displayName}}</span></a><span class="chat-time">10:02AM</span></div>
+                  <div class="chat-message">{{item.content}}</div>
+                </div>
               </template>
                 <!--This section should only appear when hovering over the chat item-->
                 <!--<div class="chat-tangent-link end"> 
@@ -252,9 +253,11 @@
           
           <template is="dom-if" if="{{_checkType(item.type, 'joined')}}">
             <div class="chat-item flex-horizontal">
-              <img src="http://pbs.twimg.com/profile_images/741290730170122240/abfazODg_normal.jpg" class="chat-profile-image">
+              <a href$="/u/{{item.sentBy.id}}">
+                <img src="http://pbs.twimg.com/profile_images/741290730170122240/abfazODg_normal.jpg" class="chat-profile-image">
+              </a>
               <div class="chat-text flexchild">  
-                <div class="chat-name-date"><span class="chat-name">{{item.sentBy.displayName}}</span><span class="chat-time">10:02AM</span></div> 
+                <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}"><span class="chat-name">{{item.sentBy.displayName}}</span></a><span class="chat-time">10:02AM</span></div> 
                 <div class="chat-message">just joined!</div>
               </div>
             </div>
@@ -266,7 +269,7 @@
     <template is="dom-if" if={{signedIn}}>
         <div class="sendSection card layout horizontal">
           <div class="flex">
-            <paper-input label="Say somthing..." id="message" on-keypress="_messageKey"></paper-input>  
+            <paper-input label="Say something..." id="message" on-keypress="_messageKey"></paper-input>  
           </div>
         </div>
       </template>
