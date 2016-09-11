@@ -68,6 +68,16 @@
       data="{{savedNewRoom}}">
     </firebase-document>
 
+    <firebase-storage
+      id="fs"
+      app-name="convoofire"
+      path="/r/awesome/roomfiles"
+      files="[[file]]"
+      uploaded-files="{{uploadedFile}}"
+      on-error="catchError"
+      >
+      </firebase-storage>
+
     <convoo-heading>Just a little setup</convoo-heading>    
     <paper-card class="card">
       <div class="card-content horizontal layout">
@@ -78,6 +88,7 @@
         </div>
         <div class="image card-section">
           <img src="../../images/test.png" width="90%">
+          <input id="file-uploader2" type="file" on-change="onFileUpload2" />
           <paper-button id="create-room" raised on-tap="clicked">Create</paper-button>
         </div>
       </div>
@@ -97,6 +108,18 @@
           type: Object,
           value: {}
         },
+        files: {
+          type: Array,
+          notify: true,
+          value: [],
+        },
+        uploadTasks: {
+          type: Array,
+          observer: '_uploadTasksChanged'
+        },
+        uploadedFiles: {
+          type: Array,
+        }
       },
 
       clicked: function(){
@@ -111,7 +134,24 @@
         this.savedNewRoom = this.newRoom;
         this.$.newRoomDocument.save("/r/", this.roomSlug);
         location.href = "/r/"+this.roomSlug;
-      }
+      },
+
+        _uploadTasksChanged(uploadTasks) {
+          console.log(uploadTasks);
+        },
+
+        _uploadedFilesChanged(uploadedFiles) {
+          console.log(uploadedFiles);
+        },
+
+        onFileUpload2(e) {
+          this.file = e.target.files[0];
+          this.$$('#fs').upload();
+        },
+
+        isImage(c) {
+          return c && c.indexOf('image') === 0;
+        },
 
     });
 

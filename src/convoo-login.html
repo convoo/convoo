@@ -65,6 +65,16 @@
       data="{{newUser}}">
     </firebase-document>
 
+    <firebase-storage
+      id="fs"
+      app-name="convoofire"
+      path="/u/{{user.displayName}}"
+      files="[[file]]"
+      uploaded-files="{{uploadedFile}}"
+      on-error="catchError"
+      >
+      </firebase-storage>
+
   </template>
 
   <script>
