@@ -17,7 +17,7 @@
     "iron-selector": "polymerelements/iron-selector#^1.0.0",
     "paper-icon-button": "PolymerElements/paper-icon-button#~1.1.1",
     "polymer": "polymer/polymer#^1.4.0",
-    "polymerfire": "firebase/polymerfire#^0.9.2",
+    "polymerfire": "https://github.com/tjmonsi/polymerfire.git#adding-firebase-storage",
     "login-fire": "#^0.1.0",
     "paper-fab": "PolymerElements/paper-fab#^1.2.0",
     "slug": "^0.9.1",
