@@ -158,12 +158,14 @@
           canvas.toBlob(function(blob) {
             console.log(blob);
             myblob = blob;
+            myblob.name = "imageFilename.jpg"
         });
+
           var that = this;
           setTimeout(function(){ 
             that.file = myblob;
             that.$$('#fs').upload();  
-          }, 6000);
+          }, 2000);
     
         },
 
