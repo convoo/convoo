@@ -153,19 +153,17 @@
           var image = new Image();
           image.src = "https://pbs.twimg.com/profile_images/741290730170122240/abfazODg_400x400.jpg";
           image.crossOrigin = "Anonymous";
-          setTimeout(function(){ 
-            ctx.drawImage(image, 0, 0, 400, 400);  
-            canvas.toBlob(function(blob) {
+          var that = this;
+          image.onload = function() {
+            ctx.drawImage(image, 0, 0, 400, 400);
+              canvas.toBlob(function(blob) {
               console.log(blob);
               myblob = blob;
               myblob.name = "Filename.jpg"
+              that.file = myblob;
+              that.$$('#fs').upload();  
             });
-          }, 4000);
-          var that = this;
-          setTimeout(function(){ 
-            that.file = myblob;
-            that.$$('#fs').upload();  
-          }, 8000);   
+          };
         },
 
         isImage(c) {
