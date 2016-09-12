@@ -109,7 +109,7 @@
           this.$.newUserDocument.save("/u/", u.detail.uid);
           this.newUser.largePhotoURL = u.detail.photoURL.replace("normal", "400x400");
 
-          var sizes = [400, 300, 200, 100, 50, 5];
+          var sizes = [400, 300, 200, 100, 50, 25, 5];
           var that = this;
           for (var i = 0; i < sizes.length; i++) {
               var size = sizes[i];
@@ -122,19 +122,25 @@
               image.src = this.newUser.largePhotoURL;
               image.crossOrigin = "Anonymous";
               image.onload = function() {
-                ctx.drawImage(image, 0, 0, size, size);
-                if(size != 5){
+                  ctx.drawImage(image, 0, 0, size, size);
                   canvas.toBlob(function(blob) {
-                  myblob = blob;
-                  myblob.name = size;
-                  that.file = myblob;
-                  that.$$('#fs').upload();  
-                }); //.bind(this);
-                } else {
-                  // Save base 64 to database
-                }
-                // TODO: Make this into a multi fle upload 
-
+                      myblob = blob;
+                      myblob.name = size;
+                      if(size > 5){  
+                      that.file = myblob;
+                      that.$$('#fs').upload();  
+                      // TODO: Make this into a multi fle upload 
+                      // TODO: pass the rewized back in to to make the next smaller size to avoid pixelation
+                      } else {  
+                        // Save base 64 to database
+                        var reader = new window.FileReader();
+                        reader.readAsDataURL(myblob); 
+                        reader.onloadend = function() {
+                          base64data = reader.result;                
+                          console.log(base64data); // Save this to the database 
+                        }
+                      } 
+                  }); //.bind(this);
               }; // End onload 
           }// End Loop
         } // End If
