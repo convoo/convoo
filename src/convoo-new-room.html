@@ -150,6 +150,18 @@
           canvas.width = 400;
           canvas.height = 400;
           var ctx = canvas.getContext("2d");
+          // Draw a circle...
+          var centerX = canvas.width / 2;
+          var centerY = canvas.height / 2;
+          var radius = 70;
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+          ctx.fillStyle = 'green';
+          ctx.fill();
+          ctx.lineWidth = 5;
+          ctx.strokeStyle = '#003300';
+          ctx.stroke();
+
           var image = new Image();
           image.src = "https://pbs.twimg.com/profile_images/741290730170122240/abfazODg_400x400.jpg";
           ctx.drawImage(image, 0, 0, 400, 400);  
@@ -158,7 +170,7 @@
           canvas.toBlob(function(blob) {
             console.log(blob);
             myblob = blob;
-            myblob.name = "imageFilename.jpg"
+            myblob.name = "Filename.jpg"
         });
 
           var that = this;
