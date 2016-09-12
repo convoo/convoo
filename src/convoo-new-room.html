@@ -87,7 +87,7 @@
           <paper-textarea label="Description" value="{{newRoom.body}}"></paper-textarea>
         </div>
         <div class="image card-section">
-          <img src="../../images/test.png" width="90%">
+          <img src="../../images/test.png" width="90%" id="test">
           <input id="file-uploader2" type="file" on-change="onFileUpload2" />
           <paper-button id="create-room" raised on-tap="clicked">Create</paper-button>
         </div>
@@ -145,8 +145,23 @@
         },
 
         onFileUpload2(e) {
-          this.file = e.target.files[0];
-          this.$$('#fs').upload();
+
+          var canvas = document.createElement("canvas");
+          canvas.width = 400;
+          canvas.height = 400;
+          var ctx = canvas.getContext("2d");
+          var image = new Image();
+          image.src = "https://pbs.twimg.com/profile_images/741290730170122240/abfazODg_400x400.jpg";
+          ctx.drawImage(image, 0, 0);  
+          var myblob;
+
+          canvas.toBlob(function(blob) {
+            console.log(blob);
+            myblob = blob;
+        });
+
+          this.file = myblob;
+          this.$$('#fs').upload();      
         },
 
         isImage(c) {
