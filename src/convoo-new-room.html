@@ -152,16 +152,19 @@
           var ctx = canvas.getContext("2d");
           var image = new Image();
           image.src = "https://pbs.twimg.com/profile_images/741290730170122240/abfazODg_400x400.jpg";
-          ctx.drawImage(image, 0, 0);  
+          ctx.drawImage(image, 0, 0, 400, 400);  
           var myblob;
 
           canvas.toBlob(function(blob) {
             console.log(blob);
             myblob = blob;
         });
-
-          this.file = myblob;
-          this.$$('#fs').upload();      
+          var that = this;
+          setTimeout(function(){ 
+            that.file = myblob;
+            that.$$('#fs').upload();  
+          }, 6000);
+    
         },
 
         isImage(c) {
