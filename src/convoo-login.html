@@ -68,7 +68,7 @@
     <firebase-storage
       id="fs"
       app-name="convoofire"
-      path="/u/{{user.displayName}}"
+      path="/u"
       files="[[file]]"
       uploaded-files="{{uploadedFile}}"
       on-error="catchError"
@@ -107,6 +107,35 @@
           this.newUser.providerId = u.detail.providerId;
           this.newUser.providerData = u.detail.providerData;
           this.$.newUserDocument.save("/u/", u.detail.uid);
+          this.newUser.largePhotoURL = u.detail.photoURL.replace("normal", "400x400");
+
+          var sizes = [400, 300, 200, 100, 50, 5];
+          var that = this;
+          for (var i = 0; i < sizes.length; i++) {
+              var size = sizes[i];
+              var canvas = document.createElement("canvas");
+              canvas.width = size;
+              canvas.height = size;
+              var ctx = canvas.getContext("2d");  
+              var myblob;
+              var image = new Image();
+              image.src = this.newUser.largePhotoURL;
+              image.crossOrigin = "Anonymous";
+              image.onload = function() {
+                ctx.drawImage(image, 0, 0, size, size);
+                if(size != 5){
+                  canvas.toBlob(function(blob) {
+                  myblob = blob;
+                  myblob.name = size;
+                  that.file = myblob;
+                  that.$$('#fs').upload();  
+                }); //.bind(this);
+                } else {
+                  // Save base 64 to database
+                }
+              }; // End onload 
+
+          }
         }
       }
 

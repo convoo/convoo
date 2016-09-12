@@ -152,6 +152,7 @@
           var myblob;
           var image = new Image();
           image.src = "https://pbs.twimg.com/profile_images/741290730170122240/abfazODg_400x400.jpg";
+          //"http://pbs.twimg.com/profile_images/741290730170122240/abfazODg_normal.jpg"
           image.crossOrigin = "Anonymous";
           var that = this;
           image.onload = function() {
@@ -162,7 +163,7 @@
               myblob.name = "Filename.jpg"
               that.file = myblob;
               that.$$('#fs').upload();  
-            });
+            }).bind(this);
           };
         },
 
