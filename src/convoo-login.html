@@ -64,15 +64,15 @@
       path="/u/"
       data="{{newUser}}">
     </firebase-document>
-
+         <!--this.newUser.displayName = u.detail.displayName;-->
     <firebase-storage
       id="fs"
       app-name="convoofire"
-      path="/u"
-      files="[[file]]"
-      uploaded-files="{{uploadedFile}}"
+      path="/u/test"
+      files="[[files]]"
+      uploaded-files="{{uploadedFiles}}"
       on-error="catchError"
-      >
+      auto-upload>
       </firebase-storage>
 
   </template>
@@ -124,7 +124,7 @@
                               resizeThis(25, blob, "blob" ).then(function(blob){
                               images.push(blob);
                                   resizeThis(5, blob, "blob" ).then(function(base64){
-                                  console.log(images);
+                                  that.files = images;
                                   that.newUser.placeholder = base64;
                                   that.$.newUserDocument.save("/u/", u.detail.uid);                            
                                   })
@@ -143,10 +143,8 @@
           function resizeThis(size, img, type){
             return new Promise(function(resolve, reject){
               var canvas = document.createElement("canvas");
-              canvas.width = size;
-              canvas.height = size;
+              canvas.width = canvas.height = size;
               var ctx = canvas.getContext("2d");  
-              var myblob;
               var image = new Image();
               if(typeof img == "string"){
               image.src = img;
@@ -154,10 +152,11 @@
                 image.src = URL.createObjectURL(img);
               }
               image.crossOrigin = "Anonymous";
+              // How to catch if the below image doesnt load? maybe the url doesnt exist?
               image.onload = function() {
                   ctx.drawImage(image, 0, 0, size, size);
                   canvas.toBlob(function(blob) {
-                      myblob = blob;
+                      var myblob = blob;
                       myblob.name = size;
                       if(size > 5){
                         resolve(myblob);
