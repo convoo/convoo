@@ -106,46 +106,73 @@
           this.newUser.photoURL = u.detail.photoURL;
           this.newUser.providerId = u.detail.providerId;
           this.newUser.providerData = u.detail.providerData;
-          this.$.newUserDocument.save("/u/", u.detail.uid);
-          this.newUser.largePhotoURL = u.detail.photoURL.replace("normal", "400x400");
-
-          var sizes = [400, 300, 200, 100, 50, 25, 5];
+          
+          var image = u.detail.photoURL.replace("normal", "400x400");
+          var images = [];
           var that = this;
-          for (var i = 0; i < sizes.length; i++) {
-              var size = sizes[i];
+
+          resizeThis(400, image, "blob" ).then(function(blob){
+          images.push(blob);
+              resizeThis(300, blob, "blob" ).then(function(blob){
+              images.push(blob);
+                  resizeThis(200, blob, "blob" ).then(function(blob){
+                  images.push(blob);
+                      resizeThis(100, blob, "blob" ).then(function(blob){
+                      images.push(blob);
+                          resizeThis(50, blob, "blob" ).then(function(blob){
+                          images.push(blob);
+                              resizeThis(25, blob, "blob" ).then(function(blob){
+                              images.push(blob);
+                                  resizeThis(5, blob, "blob" ).then(function(base64){
+                                  console.log(images);
+                                  that.newUser.placeholder = base64;
+                                  that.$.newUserDocument.save("/u/", u.detail.uid);                            
+                                  })
+                              })
+                          })
+                      })
+                  })
+              })
+          })
+
+        }
+      }
+    });
+
+
+          function resizeThis(size, img, type){
+            return new Promise(function(resolve, reject){
               var canvas = document.createElement("canvas");
               canvas.width = size;
               canvas.height = size;
               var ctx = canvas.getContext("2d");  
               var myblob;
               var image = new Image();
-              image.src = this.newUser.largePhotoURL;
+              if(typeof img == "string"){
+              image.src = img;
+              } else {
+                image.src = URL.createObjectURL(img);
+              }
               image.crossOrigin = "Anonymous";
               image.onload = function() {
                   ctx.drawImage(image, 0, 0, size, size);
                   canvas.toBlob(function(blob) {
                       myblob = blob;
                       myblob.name = size;
-                      if(size > 5){  
-                      that.file = myblob;
-                      that.$$('#fs').upload();  
-                      // TODO: Make this into a multi fle upload 
-                      // TODO: pass the rewized back in to to make the next smaller size to avoid pixelation
-                      } else {  
-                        // Save base 64 to database
+                      if(size > 5){
+                        resolve(myblob);
+                      } else {
                         var reader = new window.FileReader();
                         reader.readAsDataURL(myblob); 
                         reader.onloadend = function() {
                           base64data = reader.result;                
-                          console.log(base64data); // Save this to the database 
+                          resolve(base64data);
                         }
-                      } 
-                  }); //.bind(this);
-              }; // End onload 
-          }// End Loop
-        } // End If
-      } // End save user
-    }); // End polymer
+                      }
+                  });
+              }
+            }); 
+          } // End functoin "resizeThis" 
 
   </script>
 
