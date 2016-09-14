@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "4.5"
+script:
+  - npm install -g bower firebase-tools polymer-cli
+  - bower install
+  - polymer test
+master:
+  script:
+    - npm install -g bower firebase-tools polymer-cli
+    - bower install
+    - polymer test
+    - polymer build
+  after_success:
+    - firebase deploy --token $FIREBASE_TOKEN
