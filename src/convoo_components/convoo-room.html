@@ -47,8 +47,28 @@
         margin-right: 5px;
       }
       
-      .room-info{
+      .voting{
         display:none;
+      }
+
+      .creator{
+        color: #d4d7d8;
+        text-align:center;
+      }
+
+      .creator a{
+        color: #656e72;
+        text-decoration: none;
+      }
+
+      .creator a:hover{
+        color: white;
+        text-decoration: underline;
+      }
+
+      .creator-name{
+        color:#656e72;
+        font-size:0.7em;
       }
 
       .user-type-desc{
@@ -59,15 +79,34 @@
       }
 
       .room-name {
-        padding-left: 10px;
+        padding-left: 5px;
+        color: white;
+        font-size: 1.5em;
       }
 
       .room-body {
         padding: 5px;
+        color: #d4d7d8;
+        font-size: 0.85em;
+        font-weight: 100;
       }
 
-      .room-link {
-        padding: 5px;
+      .room-link-section {
+        font-size:0.7em;
+        padding-left:5px;
+      }
+
+      .room-link{
+          text-overflow: ellipsis;
+          max-width: 50px;
+          color:#656e72;
+      }
+
+
+    
+      .room-link-section iron-icon{
+        height:1.7em;
+        width:1.7em
       }
 
       .chat-messages {
@@ -174,6 +213,21 @@
         /* Input foreground color */
         --paper-input-container-input-color: white;
       }
+      .divider{
+        border-bottom:1px solid #747c7f;
+        text-align:center;
+      }
+
+      .divider iron-icon {
+        background-color:#2a363b;
+        position:relative;
+        top:12px;
+        width:50px;
+        color:#656e72;
+        cursor:hand;
+        cursor:pointer;
+      }
+
 
     </style>
 
@@ -217,20 +271,30 @@
             <a on-tap="downvote"><img src="../../images/arrow-down.svg" class="arrow"></a>
           </div>
         </div>
-        <div class="flex">
-          <span class="room-name">{{thisRoom.name}}</span>
-          <span class="room-link">
-            <a href="{{thisRoom.url}}">link</a>
-          </span>
+        <div class="flex vertical">
+          <div class="room-name">{{thisRoom.name}}</div>
+          <div class="room-link-section">
+              <iron-icon icon="link"></iron-icon>
+            <a href="{{thisRoom.url}}" class="room-link">{{thisRoom.url}}</a>
+          </div>
         </div>
-        <div class="creator">
-          By
-          <a href$="/u/{{thisRoom.createdBy.id}}">{{thisRoom.createdBy.displayName}}</a>
-          <a href$="/u/{{thisRoom.createdBy.id}}"><img src$="/images/users/{{thisRoom.createdBy.id}}"></a>
+        <div class="creator vertical">
+          <div>          
+            <a href$="/u/{{thisRoom.createdBy.id}}">
+              <img src="http://pbs.twimg.com/profile_images/741290730170122240/abfazODg_normal.jpg" class="chat-profile-image">
+            </a>
+          </div>
+          <div class="creator-name">
+            By
+            <a href$="/u/{{thisRoom.createdBy.id}}">{{thisRoom.createdBy.displayName}}</a>
+          </div>
         </div>
       </div>
       <div class="room-body">
         {{thisRoom.body}}
+        <div class="divider">
+          <iron-icon icon="expand-less"></iron-icon>
+          </div>
       </div>
     </div>
 
