@@ -235,28 +235,31 @@
         <template is="dom-repeat" items="{{chats}}">
           <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
           
-            <div class="chat-item">
-              <div class="flex-horizontal">
+            <div class="chat-item flex-horizontal">
+              <div class="user-image">
                 <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
-                <a href$="/u/{{item.sentBy.id}}">
-                  <img src="http://pbs.twimg.com/profile_images/681558455371612160/c3jfI-c1_normal.jpg" alt="{{item.sentBy.displayName}}" class="chat-profile-image">      
-                </a>
-                <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a><span class="chat-time">10:02AM</span></div>
+                  <a href$="/u/{{item.sentBy.id}}">
+                    <img src="http://pbs.twimg.com/profile_images/681558455371612160/c3jfI-c1_normal.jpg" alt="{{item.sentBy.displayName}}" class="chat-profile-image">      
+                  </a>
               </template>
               </div>
-              <div class="chat-text flexchild"> 
-                <div class="chat-message">{{item.content}}</div>
+              <div class="chat-main">
+                <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
+                  <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a></div>
+                </template>
+                <div class="chat-text flexchild"> 
+                  <div class="chat-message">{{item.content}}</div>
+                </div>
               </div>
-              
                 <!--This section should only appear when hovering over the chat item-->
-                <!--<div class="chat-tangent-link end"> 
-                  <small>
-                    <a href="">Go on a tangent</a>
-                  </small>
-                  <small>
-                    {{item.sentAt}}
-                  </small>
-                </div>-->
+              <div class="chat-tangent-link end"> 
+                <small>
+                  <a href="">Go on a tangent</a>
+                </small>
+                <small>
+                  {{item.sentAt}}
+                </small>
+              </div>
             </div>
 
 
