@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/moment-element/moment-element.html">
 
 <dom-module id="convoo-room">
 
@@ -248,7 +249,7 @@
               </div>
               <div class="chat-main flex">
                 <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
-                  <div class="chat-text"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a> <span class="chat-time">{{item.sentAt}}</span></div>
+                  <div class="chat-text"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a> <span class="chat-time"><moment-element datetime="{{item.sentAt}}" output-format="hh:mm A"></moment-element></span></div>
                 </template>
                 <div class="chat-text flexchild"> 
                   <div class="chat-message">{{item.content}}</div>
@@ -257,11 +258,14 @@
                 <!--This section should only appear when hovering over the chat item-->
               <div class="chat-tangent-link end">
                 <template is="dom-if" if="{{_sameAuthor(chats, index)}}">
-                  <small>
-                    <a href="">Go on a tangent</a>
+                  <!--<small>
+                    <a href="#">Go on a private tangent</a>
                   </small>
+                  <small>
+                    <a href="#">Go on a public tangent</a>
+                  </small>-->
                   <small class="chat-time">
-                    {{item.sentAt}}
+                    <moment-element datetime="{{item.sentAt}}" output-format="hh:mm A"></moment-element>
                   </small>
                 </template>
               </div>
@@ -276,7 +280,7 @@
                 <img src="http://pbs.twimg.com/profile_images/741290730170122240/abfazODg_normal.jpg" class="chat-profile-image">
               </a>
               <div class="chat-text flexchild">  
-                <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a><span class="chat-time">10:02AM</span></div> 
+                <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a><span class="chat-time"><moment-element datetime="{{item.sentAt}}" output-format="hh:mm A"></moment-element></span></div> 
                 <div class="chat-message">just joined!</div>
               </div>
             </div>
