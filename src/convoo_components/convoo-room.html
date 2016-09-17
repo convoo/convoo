@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/moment-element/moment-element.html">
 
 <dom-module id="convoo-room">
 
@@ -12,12 +13,12 @@
         display: flex;
         flex-direction: column;
         padding: 0px;
+        border: 1px solid rgba(0, 0, 0, 0.05);;
+        border-radius: 3px;
       }
       .card {
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
         padding: 16px;
-        margin: 5px 24px;
-        border-radius: 5px;
+        margin: 0px;
         background-color: #2a363b;
         color: #757575;
       }
@@ -45,21 +46,31 @@
         background-color: #1d2629;
         margin-right: 5px;
       }
-      .participants{
-        background-color: #2a363b;
-        width: 100%;
-        padding: 10px;
-        height: 32px
+      
+      .voting{
+        display:none;
       }
-      .spinner{
-        width: 10px;
-        padding-right: 10px;
-        line-height: 1.0;
+
+      .creator{
+        color: #d4d7d8;
+        text-align:center;
       }
-      .arrow{
-        height: 5px;
-        width: 10px;
+
+      .creator a{
+        color: #656e72;
+        text-decoration: none;
       }
+
+      .creator a:hover{
+        color: white;
+        text-decoration: underline;
+      }
+
+      .creator-name{
+        color:#656e72;
+        font-size:0.7em;
+      }
+
       .user-type-desc{
         width: 100%;
         font-size: 11px;
@@ -68,23 +79,50 @@
       }
 
       .room-name {
-        padding-left: 10px;
+        padding-left: 5px;
+        color: white;
+        font-size: 1.5em;
       }
 
       .room-body {
         padding: 5px;
+        color: #d4d7d8;
+        font-size: 0.85em;
+        font-weight: 100;
       }
 
-      .room-link {
-        padding: 5px;
+      .room-link-section {
+        font-size:0.7em;
+        padding-left:5px;
+      }
+
+      .room-link{
+        display: inline-block;
+        text-overflow: ellipsis;
+        max-width: 120px;
+        overflow: hidden;
+        white-space: nowrap;
+        color:#656e72;
+      }
+
+
+    
+      .room-link-section iron-icon{
+        height:1.7em;
+        width:1.7em
       }
 
       .chat-messages {
-        overflow: scroll;
+        overflow: auto;
+        max-width:100%;
+      }
+
+      .sendSection{
+        max-width:100%;
       }
 
       .chat-item {
-        padding: 3px;
+        padding: 3px 3px 0px 3px;
       }
 
       .chat-message .chat-content {
@@ -95,11 +133,105 @@
         font-style: italic;
       }
 
-      .chat-author-img {
-        border-radius: 5px;
-        height: 20px;
-        width: 20px;
+      .participants{
+        position: relative;
+        background-color: #2a363b;
+        padding: 10px;
+        height: 32px;
       }
+
+      .chat-text{
+        padding-left:10px;
+        position:relative;
+        top:-4px;
+      }
+
+      .chat-profile-image-section{
+        width:32px;
+      }
+
+      .chat-profile-image{
+        border-radius:50%;
+        width:32px;
+        height:32px;
+        border: 1px solid transparent;
+      }
+      
+      .chat-profile-image:hover{
+        cursor:hand;
+        cursor:pointer;
+        border: 1px solid black;
+      }
+
+      .chat-name{
+        font-size:0.8em;
+        font-weight: 500;
+        color:white;
+        letter-spacing: 0.03em;
+        color:white;
+        text-decoration:none;
+        cursor:hand;
+        cursor:pointer;
+      }
+      .chat-name:hover{
+        text-decoration:underline;
+        cursor:hand;
+        cursor:pointer;
+      }
+
+      .chat-time{
+        color:#d4d7d8;
+        font-size:0.65em;
+        font-weight: 100;
+        padding-left:5px;
+        letter-spacing: 0.1em;
+      }
+      .chat-message{
+        color:#d4d7d8;
+        font-size:0.8em;
+        font-weight: 100;
+        line-height:1.8em;
+      }
+      .flex-horizontal {
+        @apply(--layout-horizontal);
+      }
+      .flexchild {
+        @apply(--layout-flex);
+      }
+      ::-webkit-scrollbar{
+        width: 5px;  /* for vertical scrollbars */
+        height: 5px; /* for horizontal scrollbars */
+      }
+      ::-webkit-scrollbar-track{
+        background: rgba(0, 0, 0, 0.1);
+      }
+      ::-webkit-scrollbar-thumb{
+        background: rgba(0, 0, 0, 0.2);
+      }
+      :root {
+        /* Label and underline color when the input is not focused */
+        --paper-input-container-color: white;
+        /* Label and underline color when the input is focused */
+        --paper-input-container-focus-color: #677073;
+        /* Input foreground color */
+        --paper-input-container-input-color: white;
+      }
+      .divider{
+        border-bottom:1px solid #747c7f;
+        text-align:center;
+      }
+
+      .divider iron-icon {
+        background-color:#2a363b;
+        position:relative;
+        top:12px;
+        width:50px;
+        color:#656e72;
+        cursor:hand;
+        cursor:pointer;
+      }
+
+
     </style>
 
     <firebase-document
@@ -117,22 +249,15 @@
     </firebase-document>
 
     
-    <template is="dom-if" if={{_checkRepeatable(thisRoom.participants)}}>
+    <!--<template is="dom-if" if={{_checkRepeatable(thisRoom.participants)}}>
       <div class="participants layout horizontal">
-        <div class="spinner">
-          <img src="../../images/arrow-up.svg" class="arrow">
-          <img src="../../images/arrow-down.svg" class="arrow">
-        </div>
         <template is="dom-repeat" items="{{thisRoom.participants}}">
           <a href$="/u/{{item}}">
             <img src$="/images/users/{{item}}" class="profile-photo">
           </a>
         </template>
       </div>
-      <div class="user-type-desc">
-        Contributed
-      </div>
-    </template>
+    </template>-->
 
 
 
@@ -149,20 +274,33 @@
             <a on-tap="downvote"><img src="../../images/arrow-down.svg" class="arrow"></a>
           </div>
         </div>
-        <div class="flex">
-          <span class="room-name">{{thisRoom.name}}</span>
-          <span class="room-link">
-            <a href="{{thisRoom.url}}">link</a>
-          </span>
+        <div class="flex vertical">
+          <div class="room-name">{{thisRoom.name}}</div>
+          <div class="room-link-section">
+            <a href="{{thisRoom.url}}" target="_blank" class="room-link"><iron-icon icon="link"></iron-icon></a>
+            <a href="{{thisRoom.url}}" target="_blank" class="room-link">{{thisRoom.url}}</a>
+          </div>
         </div>
-        <div class="creator">
-          By
-          <a href$="/u/{{thisRoom.createdBy.id}}">{{thisRoom.createdBy.displayName}}</a>
-          <a href$="/u/{{thisRoom.createdBy.id}}"><img src$="/images/users/{{thisRoom.createdBy.id}}"></a>
+        <div class="creator vertical">
+          <div>          
+            <a href$="/u/{{thisRoom.createdBy.id}}">
+              <img src="http://pbs.twimg.com/profile_images/741290730170122240/abfazODg_normal.jpg" class="chat-profile-image">
+            </a>
+          </div>
+          <div class="creator-name">
+            By
+            <a href$="/u/{{thisRoom.createdBy.id}}">{{thisRoom.createdBy.displayName}}</a>
+          </div>
         </div>
       </div>
       <div class="room-body">
-        {{thisRoom.body}}
+        <div class="room-description" hidden$="{{hideDescription}}">
+          {{thisRoom.body}}
+        </div>
+        <div class="divider">
+          <span hidden$="{{hideDescription}}"><iron-icon icon="expand-less" on-tap="_toggleDescription"></iron-icon></span>
+          <span hidden$="{{!hideDescription}}"><iron-icon icon="expand-more" on-tap="_toggleDescription"></iron-icon></span>
+        </div>
       </div>
     </div>
 
@@ -170,36 +308,51 @@
       <template is="dom-if" if={{_checkRepeatable(chats)}}>
         <template is="dom-repeat" items="{{chats}}">
           <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
-            <div class="chat-item chat-message">
-              <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
-                <div class="chat-author">
-                  <span class="chat-author-img-span">
-                    <img src$="/images/users/{{item.sentBy.id}}" alt="{{item.sentBy.displayName}}" class="chat-author-img">
-                  </span>
-                  {{item.sentBy.displayName}}:
-                </div>
+          
+            <div class="chat-item flex-horizontal">
+              <div class="chat-profile-image-section">
+                <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
+                  <a href$="/u/{{item.sentBy.id}}">
+                    <img src="http://pbs.twimg.com/profile_images/681558455371612160/c3jfI-c1_normal.jpg" alt="{{item.sentBy.displayName}}" class="chat-profile-image">      
+                  </a>
               </template>
-              <div class="chat-content layout horizontal">
-                
-                <div class="chat-content-message flex">
-                  {{item.content}}
-                </div>
-                <!--This section should only appear when hovering over the chat item-->
-                <div class="chat-tangent-link end"> 
-                  <small>
-                    <a href="">Go on a tangent</a>
-                  </small>
-                  <small>
-                    {{item.sentAt}}
-                  </small>
+              </div>
+              <div class="chat-main flex">
+                <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
+                  <div class="chat-text"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a> <span class="chat-time"><moment-element datetime="{{item.sentAt}}" output-format="hh:mm A"></moment-element></span></div>
+                </template>
+                <div class="chat-text flexchild"> 
+                  <div class="chat-message">{{item.content}}</div>
                 </div>
               </div>
+                <!--This section should only appear when hovering over the chat item-->
+              <div class="chat-tangent-link end">
+                <template is="dom-if" if="{{_sameAuthor(chats, index)}}">
+                  <!--<small>
+                    <a href="#">Go on a private tangent</a>
+                  </small>
+                  <small>
+                    <a href="#">Go on a public tangent</a>
+                  </small>-->
+                  <small class="chat-time">
+                    <moment-element datetime="{{item.sentAt}}" output-format="hh:mm A"></moment-element>
+                  </small>
+                </template>
+              </div>
             </div>
+
+
           </template>
           
           <template is="dom-if" if="{{_checkType(item.type, 'joined')}}">
-            <div class="chat-item chat-joined">
-              {{item.sentBy.displayName}} just joined!
+            <div class="chat-item flex-horizontal">
+              <a href$="/u/{{item.sentBy.id}}">
+                <img src="http://pbs.twimg.com/profile_images/741290730170122240/abfazODg_normal.jpg" class="chat-profile-image">
+              </a>
+              <div class="chat-text flexchild">  
+                <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a><span class="chat-time"><moment-element datetime="{{item.sentAt}}" output-format="hh:mm A"></moment-element></span></div> 
+                <div class="chat-message">just joined!</div>
+              </div>
             </div>
           </template>
         </template>
@@ -209,10 +362,7 @@
     <template is="dom-if" if={{signedIn}}>
         <div class="sendSection card layout horizontal">
           <div class="flex">
-            <paper-input label="Your message" id="message" on-keypress="_messageKey"></paper-input>  
-          </div>
-          <div>
-            <paper-button raised id="send-message" on-tap="_sendMessage">Send</paper-button>
+            <paper-input label="Say something..." id="message" on-keypress="_messageKey"></paper-input>  
           </div>
         </div>
       </template>
@@ -226,7 +376,11 @@
       properties: {
         roomId: String,
         user: Object,
-        signedIn: Boolean
+        signedIn: Boolean,
+        hideDescription: {
+          type: Boolean,
+          value: false
+        }
       },
 
       observers: [
@@ -261,6 +415,10 @@
         if(e.keyCode == 13){
           this._sendMessage();
         }
+      },
+
+      _toggleDescription: function(){
+        this.hideDescription = !this.hideDescription;
       },
 
       _sendMessage: function(){
