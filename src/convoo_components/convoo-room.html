@@ -79,7 +79,7 @@
       }
 
       .chat-item {
-        padding: 3px 3px 6px 3px;
+        padding: 3px 3px 0px 3px;
       }
 
       .chat-message .chat-content {
@@ -102,6 +102,11 @@
         position:relative;
         top:-4px;
       }
+
+      .chat-profile-image-section{
+        width:32px;
+      }
+
       .chat-profile-image{
         border-radius:50%;
         width:32px;
@@ -115,13 +120,11 @@
         border: 1px solid black;
       }
 
-      .chat-name-date{
+      .chat-name{
         font-size:0.8em;
         font-weight: 500;
         color:white;
         letter-spacing: 0.03em;
-      }
-      .chat-name{
         color:white;
         text-decoration:none;
         cursor:hand;
@@ -236,29 +239,31 @@
           <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
           
             <div class="chat-item flex-horizontal">
-              <div class="user-image">
+              <div class="chat-profile-image-section">
                 <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
                   <a href$="/u/{{item.sentBy.id}}">
                     <img src="http://pbs.twimg.com/profile_images/681558455371612160/c3jfI-c1_normal.jpg" alt="{{item.sentBy.displayName}}" class="chat-profile-image">      
                   </a>
               </template>
               </div>
-              <div class="chat-main">
+              <div class="chat-main flex">
                 <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
-                  <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a></div>
+                  <div class="chat-text"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a> <span class="chat-time">{{item.sentAt}}</span></div>
                 </template>
                 <div class="chat-text flexchild"> 
                   <div class="chat-message">{{item.content}}</div>
                 </div>
               </div>
                 <!--This section should only appear when hovering over the chat item-->
-              <div class="chat-tangent-link end"> 
-                <small>
-                  <a href="">Go on a tangent</a>
-                </small>
-                <small>
-                  {{item.sentAt}}
-                </small>
+              <div class="chat-tangent-link end">
+                <template is="dom-if" if="{{_sameAuthor(chats, index)}}">
+                  <small>
+                    <a href="">Go on a tangent</a>
+                  </small>
+                  <small class="chat-time">
+                    {{item.sentAt}}
+                  </small>
+                </template>
               </div>
             </div>
 
