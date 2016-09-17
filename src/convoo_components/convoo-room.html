@@ -97,9 +97,12 @@
       }
 
       .room-link{
-          text-overflow: ellipsis;
-          max-width: 50px;
-          color:#656e72;
+        display: inline-block;
+        text-overflow: ellipsis;
+        max-width: 120px;
+        overflow: hidden;
+        white-space: nowrap;
+        color:#656e72;
       }
 
 
@@ -246,7 +249,7 @@
     </firebase-document>
 
     
-    <template is="dom-if" if={{_checkRepeatable(thisRoom.participants)}}>
+    <!--<template is="dom-if" if={{_checkRepeatable(thisRoom.participants)}}>
       <div class="participants layout horizontal">
         <template is="dom-repeat" items="{{thisRoom.participants}}">
           <a href$="/u/{{item}}">
@@ -254,7 +257,7 @@
           </a>
         </template>
       </div>
-    </template>
+    </template>-->
 
 
 
@@ -274,8 +277,8 @@
         <div class="flex vertical">
           <div class="room-name">{{thisRoom.name}}</div>
           <div class="room-link-section">
-              <iron-icon icon="link"></iron-icon>
-            <a href="{{thisRoom.url}}" class="room-link">{{thisRoom.url}}</a>
+            <a href="{{thisRoom.url}}" target="_blank" class="room-link"><iron-icon icon="link"></iron-icon></a>
+            <a href="{{thisRoom.url}}" target="_blank" class="room-link">{{thisRoom.url}}</a>
           </div>
         </div>
         <div class="creator vertical">
@@ -291,10 +294,13 @@
         </div>
       </div>
       <div class="room-body">
-        {{thisRoom.body}}
+        <div class="room-description" hidden$="{{hideDescription}}">
+          {{thisRoom.body}}
+        </div>
         <div class="divider">
-          <iron-icon icon="expand-less"></iron-icon>
-          </div>
+          <span hidden$="{{hideDescription}}"><iron-icon icon="expand-less" on-tap="_toggleDescription"></iron-icon></span>
+          <span hidden$="{{!hideDescription}}"><iron-icon icon="expand-more" on-tap="_toggleDescription"></iron-icon></span>
+        </div>
       </div>
     </div>
 
@@ -370,7 +376,11 @@
       properties: {
         roomId: String,
         user: Object,
-        signedIn: Boolean
+        signedIn: Boolean,
+        hideDescription: {
+          type: Boolean,
+          value: false
+        }
       },
 
       observers: [
@@ -405,6 +415,10 @@
         if(e.keyCode == 13){
           this._sendMessage();
         }
+      },
+
+      _toggleDescription: function(){
+        this.hideDescription = !this.hideDescription;
       },
 
       _sendMessage: function(){

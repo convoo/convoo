@@ -29,10 +29,10 @@
       <template is="dom-repeat" items="{{allRooms}}">
         
         <template is="dom-if" if={{_firstIndex(index)}}>
-          <convoo-room class="flex" room-id="{{item.$key}}" signed-in="{{signedIn}}" user="{{user}}"></convoo-room>
+          <convoo-room class="flex" room-id="{{item.$key}}" signed-in="{{signedIn}}" user="{{user}}" hide-description></convoo-room>
         </template>
         <template is="dom-if" if={{!_firstIndex(index)}}>
-          <convoo-room room-id="{{item.$key}}" signed-in="{{signedIn}}" user="{{user}}"></convoo-room>
+          <convoo-room room-id="{{item.$key}}" signed-in="{{signedIn}}" user="{{user}}" hide-description></convoo-room>
         </template>
         
         
