@@ -5,11 +5,5 @@ script:
   - npm install -g bower firebase-tools polymer-cli
   - bower install
   - polymer test
-master:
-  script:
-    - npm install -g bower firebase-tools polymer-cli
-    - bower install
-    - polymer test
-    - polymer build
-  after_success:
-    - firebase deploy --token $FIREBASE_TOKEN
+after_success:
+  - ./deploy.sh
