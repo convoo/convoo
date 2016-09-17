@@ -6,4 +6,12 @@ script:
   - bower install
   - polymer test
 after_success:
-  - ./deploy.sh
+  - chmod +x deploy.sh
+cache:
+  directories:
+    - bower_components
+deploy:
+  provider: script
+  script: ./deploy.sh
+  on:
+    branch: master
