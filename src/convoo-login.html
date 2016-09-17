@@ -111,67 +111,65 @@
           var images = [];
           var that = this;
 
-          resizeThis(400, image, "blob" ).then(function(blob){
-          images.push(blob);
-              resizeThis(300, blob, "blob" ).then(function(blob){
-              images.push(blob);
-                  resizeThis(200, blob, "blob" ).then(function(blob){
-                  images.push(blob);
-                      resizeThis(100, blob, "blob" ).then(function(blob){
-                      images.push(blob);
-                          resizeThis(50, blob, "blob" ).then(function(blob){
-                          images.push(blob);
-                              resizeThis(25, blob, "blob" ).then(function(blob){
-                              images.push(blob);
-                                  resizeThis(5, blob, "blob" ).then(function(base64){
-                                  that.files = images;
-                                  that.newUser.placeholder = base64;
-                                  that.$.newUserDocument.save("/u/", u.detail.uid);                            
-                                  })
-                              })
-                          })
-                      })
-                  })
-              })
-          })
-
+          that._resizeThis(400, image, "blob" ).then(function(blob){
+            images.push(blob);
+            return that._resizeThis(300, blob, "blob" );
+          }).then(function(blob){
+            images.push(blob)
+            return that._resizeThis(200, blob, "blob" )
+          }).then(function(blob){
+            images.push(blob)
+            return that._resizeThis(100, blob, "blob" )
+          }).then(function(blob){
+            images.push(blob)
+            return that._resizeThis(50, blob, "blob" )
+          }).then(function(blob){
+            images.push(blob)
+            return that._resizeThis(25, blob, "blob" )
+          }).then(function(blob){
+            images.push(blob)
+            return that._resizeThis(5, blob, "blob" )
+          }).then(function(base64){
+            that.files = images;
+            that.newUser.placeholder = base64;
+            that.$.newUserDocument.save("/u/", u.detail.uid);                            
+          });
         }
-      }
+      },
+
+      _resizeThis: function(size, img, type){
+        return new Promise(function(resolve, reject){
+          var canvas = document.createElement("canvas");
+          canvas.width = canvas.height = size;
+          var ctx = canvas.getContext("2d");  
+          var image = new Image();
+          if(typeof img == "string"){
+          image.src = img;
+          } else {
+            image.src = URL.createObjectURL(img);
+          }
+          image.crossOrigin = "Anonymous";
+          image.onload = function() {
+              ctx.drawImage(image, 0, 0, size, size);
+              canvas.toBlob(function(blob) {
+                  var myblob = blob;
+                  myblob.name = size;
+                  if(size > 5){
+                    resolve(myblob);
+                  } else {
+                    var reader = new window.FileReader();
+                    reader.readAsDataURL(myblob); 
+                    reader.onloadend = function() {
+                      base64data = reader.result;                
+                      resolve(base64data);
+                    }
+                  }
+              });
+          }
+        }); 
+      } // End function "resizeThis" 
+
     });
-
-
-          function resizeThis(size, img, type){
-            return new Promise(function(resolve, reject){
-              var canvas = document.createElement("canvas");
-              canvas.width = canvas.height = size;
-              var ctx = canvas.getContext("2d");  
-              var image = new Image();
-              if(typeof img == "string"){
-              image.src = img;
-              } else {
-                image.src = URL.createObjectURL(img);
-              }
-              image.crossOrigin = "Anonymous";
-              // How to catch if the below image doesnt load? maybe the url doesnt exist?
-              image.onload = function() {
-                  ctx.drawImage(image, 0, 0, size, size);
-                  canvas.toBlob(function(blob) {
-                      var myblob = blob;
-                      myblob.name = size;
-                      if(size > 5){
-                        resolve(myblob);
-                      } else {
-                        var reader = new window.FileReader();
-                        reader.readAsDataURL(myblob); 
-                        reader.onloadend = function() {
-                          base64data = reader.result;                
-                          resolve(base64data);
-                        }
-                      }
-                  });
-              }
-            }); 
-          } // End functoin "resizeThis" 
 
   </script>
 
