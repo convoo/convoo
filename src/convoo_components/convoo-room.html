@@ -235,16 +235,19 @@
         <template is="dom-repeat" items="{{chats}}">
           <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
           
-            <div class="chat-item flex-horizontal">
-              <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
+            <div class="chat-item">
+              <div class="flex-horizontal">
+                <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
                 <a href$="/u/{{item.sentBy.id}}">
                   <img src="http://pbs.twimg.com/profile_images/681558455371612160/c3jfI-c1_normal.jpg" alt="{{item.sentBy.displayName}}" class="chat-profile-image">      
                 </a>
-                <div class="chat-text flexchild"> 
-                  <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a><span class="chat-time">10:02AM</span></div>
-                  <div class="chat-message">{{item.content}}</div>
-                </div>
+                <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a><span class="chat-time">10:02AM</span></div>
               </template>
+              </div>
+              <div class="chat-text flexchild"> 
+                <div class="chat-message">{{item.content}}</div>
+              </div>
+              
                 <!--This section should only appear when hovering over the chat item-->
                 <!--<div class="chat-tangent-link end"> 
                   <small>
