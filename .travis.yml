@@ -1,6 +1,9 @@
 language: node_js
 node_js:
   - "4.5"
+cache:
+  directories:
+    - bower_components
 script:
   - npm install -g bower firebase-tools polymer-cli
   - bower install
@@ -8,11 +11,4 @@ script:
   - polymer test
 after_success:
   - chmod +x deploy.sh
-cache:
-  directories:
-    - bower_components
-deploy:
-  provider: script
-  script: ./deploy.sh
-  on:
-    branch: master
+  - ./deploy.sh
