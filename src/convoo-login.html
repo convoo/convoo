@@ -44,7 +44,6 @@
         padding-bottom: 45px;
       }
     </style>
-
     <div class="card" hidden$="{{signedIn}}">
       <img src="../images/app-icon.svg" width="100px" height="100px" id="square-logo">
       <h1>Let's get this conversation started</h1>
@@ -68,12 +67,15 @@
     <firebase-storage
       id="fs"
       app-name="convoofire"
-      path="/u/test"
+      path="/u"
       files="[[files]]"
       uploaded-files="{{uploadedFiles}}"
       on-error="catchError"
       auto-upload>
       </firebase-storage>
+
+
+
 
   </template>
 
@@ -108,6 +110,7 @@
           this.newUser.providerData = u.detail.providerData;
           
           var image = u.detail.photoURL.replace("normal", "400x400");
+          var image = image.replace("http", "https");
           var images = [];
           var that = this;
 
@@ -128,11 +131,14 @@
             return that._resizeThis(25, blob, "blob" )
           }).then(function(blob){
             images.push(blob)
-            return that._resizeThis(5, blob, "blob" )
+            return that._resizeThis(12, blob, "blob" )
+          }).then(function(blob){
+            return that._resizeThis(6, blob, "string" )
           }).then(function(base64){
             that.files = images;
+            console.log(that.newUser);
             that.newUser.placeholder = base64;
-            that.$.newUserDocument.save("/u/", u.detail.uid);                            
+            that.$.newUserDocument.save("/u/", u.detail.uid);                         
           });
         }
       },
@@ -154,7 +160,7 @@
               canvas.toBlob(function(blob) {
                   var myblob = blob;
                   myblob.name = size;
-                  if(size > 5){
+                  if(size > 6){
                     resolve(myblob);
                   } else {
                     var reader = new window.FileReader();
