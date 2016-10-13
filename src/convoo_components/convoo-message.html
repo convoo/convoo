@@ -1,0 +1,214 @@
+<link rel="import" href="../../bower_components/moment-element/moment-element.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<dom-module id="convoo-message">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+      #message-layout{
+        display:var(--message-display, none);
+      }
+      #joined-layout{
+        display:var(--joined-display, none);
+        border: 1px solid #212a2e;
+        background-color:#252f34;
+        height:18px;
+        margin-bottom:10px;
+        margin-top:10px;
+        border-radius:4px;
+      }
+      .message-tools{
+        display:var(--tools-display, none);
+        font-size:0.8em;
+        font-weight: 100;
+        opacity:0.6;
+        cursor:hand;
+        cursor:pointer;
+      }
+      .horizontal {
+        @apply(--layout-horizontal);
+      }
+      .vertical{
+        @apply(--layout-vertical);
+        text-align:top;
+      }
+      .flexchild {
+        @apply(--layout-flex);
+      }
+      .user-image-holder{
+        width:40px;
+        text-align:left;
+        padding-top: 7px;
+        padding-left: 7px;
+      }
+      .user-image{
+        width:30px;
+        height:30px;
+        border-radius:50%;
+        border: 1px solid black;
+      }
+      .joined-user-image{
+        width:20px;
+        height:20px;
+        border-radius:50%;
+        position: relative;
+        top: -8px;
+        left: 4px;
+        opacity:0.85;
+      }
+      .user-name{
+        font-size:0.85em;
+        font-weight: 500;
+        color:white;
+        letter-spacing: 0.03em;
+        color:white;
+        text-decoration:none;
+        cursor:hand;
+        cursor:pointer;
+        opacity:0.8;
+      }
+
+      .joined-user-name{
+        font-size:0.65em;
+        font-weight: 400;
+        color:white;
+        letter-spacing: 0.03em;
+        color:white;
+        text-decoration:none;
+        cursor:hand;
+        cursor:pointer;
+        opacity:0.7;
+        position:relative;
+        top:-4px;
+      }
+
+      .user-name:hover{
+        text-decoration:underline;
+        cursor:hand;
+        cursor:pointer;
+      }
+      .time{
+        color:#d4d7d8;
+        font-size:0.65em;
+        font-weight: 100;
+        padding-left:5px;
+        letter-spacing: 0.1em;
+        opacity:0.4;
+      }
+      .joined-time{
+        color:#d4d7d8;
+        font-size:0.6em;
+        font-weight: 100;
+        padding-left:5px;
+        letter-spacing: 0.1em;
+        opacity:0.4;
+        position:relative;
+        top:-4px;
+        right:5px;
+      }
+      .message{
+        color:#d4d7d8;
+        font-size:0.8em;
+        font-weight: 100;
+        line-height:2.7em;
+      }
+      .joined{
+        font-size:0.8em;
+        font-weight: 100;
+        font-style: italic;
+        opacity:0.6;
+      }
+      paper-icon-button{
+        height:35px;
+      }
+
+    </style>
+
+<div id="message-layout">
+  <div class="horizontal">
+      <div class="user-image-holder">
+        <template is="dom-if" if={{sameAuthor}}><img src$="{{item.sentBy.placeholder}}" class="user-image"></template>
+      </div>
+      <div class="flexchild">
+        <div class="vertical">
+            <template is="dom-if" if={{sameAuthor}}><div><a href$="/u/{{item.sentBy.id}}" class="user-name">{{item.sentBy.displayName}} </a><moment-element datetime="{{item.sentAt}}" output-format="h:mm A" class="time"></moment-element></div></template>
+            <div class="horizontal">
+                <div class="message flexchild" on-mouseover="_hoverMessage" on-mouseout="_unHoverMessage">{{item.content}} </div>
+                <div class="message-tools" on-mouseover="_hoverMessage" on-mouseout="_unHoverMessage">
+                  <paper-icon-button icon="delete"></paper-icon-button>
+                  <paper-icon-button icon="star-border"></paper-icon-button>
+                  </div>
+            </div>
+        </div>
+      </div>
+      
+  </div>
+</div>
+
+<div id="joined-layout">
+    <div class="horizontal">
+        <div class="user-image-holder">
+            <template is="dom-if" if={{sameAuthor}}><img src$="{{item.sentBy.placeholder}}" class="joined-user-image"></template>
+        </div>
+        <div class="flexchild">
+          <a href$="/u/{{item.sentBy.id}}" class="joined-user-name">{{item.sentBy.displayName}} <span class="joined"> {{item.content}}</span> </a>
+        </div>
+        <div><moment-element datetime="{{item.sentAt}}" output-format="h:mm A" class="joined-time"></moment-element></div>
+        </div>
+    </div>
+</div>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'convoo-message',
+
+      properties: {
+          item: Object,
+          sameAuthor: {
+            type:Boolean,
+            value: false
+            }
+      },
+
+      attached: function(){
+        switch(this.item.type) {
+              case 'message':
+                  this.customStyle["--message-display"] = "block";
+                  this.updateStyles();
+                  break;
+              case 'joined':
+                  this.customStyle["--joined-display"] = "block";
+                  this.updateStyles();
+                  break;
+          }
+      },
+      _hoverMessage: function(){
+          this.customStyle["--tools-display"] = "block";
+          this.updateStyles();
+      },
+      _unHoverMessage: function(){
+          this.customStyle["--tools-display"] = "none";
+          this.updateStyles();
+      }
+
+    });
+
+  </script>
+
+</dom-module>
+
+
+
+          <!--messageType: String,
+          message: String,
+          userName: String,
+          userPlaceholder: String,
+          messageTime: Number,-->
+

@@ -1,5 +1,5 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/moment-element/moment-element.html">
+<link rel="import" href="convoo-message.html">
 
 <dom-module id="convoo-room">
 
@@ -15,42 +15,18 @@
         padding: 0px;
         border: 1px solid rgba(0, 0, 0, 0.05);;
         border-radius: 3px;
+        background-color:#2a363b;
       }
+
       .card {
         padding: 16px;
         margin: 0px;
         background-color: #2a363b;
         color: #757575;
       }
-      .circle {
-        display: inline-block;
-        height: 64px;
-        width: 64px;
-        border-radius: 50%;
-        background: #ddd;
-        line-height: 64px;
-        font-size: 30px;
-        color: #555;
-        text-align: center;
-      }
-      h1 {
-        font-size: 22px;
-        margin: 16px 0;
-        color: #212121;
-      }
-      .profile-photo{
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        border: 1px solid #1d2629;
-        background-color: #1d2629;
-        margin-right: 5px;
-      }
-      
       .voting{
         display:none;
       }
-
       .creator{
         color: #d4d7d8;
         text-align:center;
@@ -70,32 +46,21 @@
         color:#656e72;
         font-size:0.7em;
       }
-
-      .user-type-desc{
-        width: 100%;
-        font-size: 11px;
-        padding: 5px;
-        color: #969696;
-      }
-
       .room-name {
         padding-left: 5px;
         color: white;
         font-size: 1.5em;
       }
-
       .room-body {
         padding: 5px;
         color: #d4d7d8;
         font-size: 0.85em;
         font-weight: 100;
       }
-
       .room-link-section {
         font-size:0.7em;
         padding-left:5px;
       }
-
       .room-link{
         display: inline-block;
         text-overflow: ellipsis;
@@ -104,93 +69,27 @@
         white-space: nowrap;
         color:#656e72;
       }
-
-
-    
       .room-link-section iron-icon{
         height:1.7em;
         width:1.7em
       }
-
       .chat-messages {
         overflow: auto;
         max-width:100%;
       }
-
       .sendSection{
-        max-width:100%;
+        max-width:calc(100% - 140px);
+        padding-bottom: 40px;
+        height:43px;
       }
-
-      .chat-item {
-        padding: 3px 3px 0px 3px;
+      .chat-profile-image{
+        border-radius:50%;
       }
-
-      .chat-message .chat-content {
-        padding-left: 10px;
-      }
-
-      .chat-message .chat-author {
-        font-style: italic;
-      }
-
       .participants{
         position: relative;
         background-color: #2a363b;
         padding: 10px;
         height: 32px;
-      }
-
-      .chat-text{
-        padding-left:10px;
-        position:relative;
-        top:-4px;
-      }
-
-      .chat-profile-image-section{
-        width:32px;
-      }
-
-      .chat-profile-image{
-        border-radius:50%;
-        width:32px;
-        height:32px;
-        border: 1px solid transparent;
-      }
-      
-      .chat-profile-image:hover{
-        cursor:hand;
-        cursor:pointer;
-        border: 1px solid black;
-      }
-
-      .chat-name{
-        font-size:0.8em;
-        font-weight: 500;
-        color:white;
-        letter-spacing: 0.03em;
-        color:white;
-        text-decoration:none;
-        cursor:hand;
-        cursor:pointer;
-      }
-      .chat-name:hover{
-        text-decoration:underline;
-        cursor:hand;
-        cursor:pointer;
-      }
-
-      .chat-time{
-        color:#d4d7d8;
-        font-size:0.65em;
-        font-weight: 100;
-        padding-left:5px;
-        letter-spacing: 0.1em;
-      }
-      .chat-message{
-        color:#d4d7d8;
-        font-size:0.8em;
-        font-weight: 100;
-        line-height:1.8em;
       }
       .flex-horizontal {
         @apply(--layout-horizontal);
@@ -220,7 +119,6 @@
         border-bottom:1px solid #747c7f;
         text-align:center;
       }
-
       .divider iron-icon {
         background-color:#2a363b;
         position:relative;
@@ -230,8 +128,6 @@
         cursor:hand;
         cursor:pointer;
       }
-
-
     </style>
 
     <firebase-document
@@ -307,54 +203,18 @@
     <div class="chat-messages card flex">
       <template is="dom-if" if={{_checkRepeatable(chats)}}>
         <template is="dom-repeat" items="{{chats}}">
-          <template is="dom-if" if="{{_checkType(item.type, 'message')}}">
-          
-            <div class="chat-item flex-horizontal">
-              <div class="chat-profile-image-section">
-                <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
-                  <a href$="/u/{{item.sentBy.id}}">
-                    <img src="http://pbs.twimg.com/profile_images/681558455371612160/c3jfI-c1_normal.jpg" alt="{{item.sentBy.displayName}}" class="chat-profile-image">      
-                  </a>
-              </template>
-              </div>
-              <div class="chat-main flex">
-                <template is="dom-if" if="{{!_sameAuthor(chats, index)}}">
-                  <div class="chat-text"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a> <span class="chat-time"><moment-element datetime="{{item.sentAt}}" output-format="hh:mm A"></moment-element></span></div>
-                </template>
-                <div class="chat-text flexchild"> 
-                  <div class="chat-message">{{item.content}}</div><iron-icon icon="delete">
-                </div>
-              </div>
-                <!--This section should only appear when hovering over the chat item-->
-              <div class="chat-tangent-link end">
-                <template is="dom-if" if="{{_sameAuthor(chats, index)}}">
-                  <!--<small>
-                    <a href="#">Go on a private tangent</a>
-                  </small>
-                  <small>
-                    <a href="#">Go on a public tangent</a>
-                  </small>-->
-                  <small class="chat-time">
-                    <moment-element datetime="{{item.sentAt}}" output-format="hh:mm A"></moment-element>
-                  </small>
-                </template>
-              </div>
-            </div>
 
-
-          </template>
+            <convoo-message 
+                item$={{item}}
+                message-type$={{item.type}}
+                message$="{{item.content}}"
+                user-name$="{{item.sentBy.displayName}}"
+                message-time$="{{item.sentAt}}"
+                user-placeholder$="{{item.sentBy.placeholder}}"
+                same-author$="{{!_sameAuthor(chats, index)}}"
+                >
+            </convoo-message>
           
-          <template is="dom-if" if="{{_checkType(item.type, 'joined')}}">
-            <div class="chat-item flex-horizontal">
-              <a href$="/u/{{item.sentBy.id}}">
-                <img src="http://pbs.twimg.com/profile_images/741290730170122240/abfazODg_normal.jpg" class="chat-profile-image">
-              </a>
-              <div class="chat-text flexchild">  
-                <div class="chat-name-date"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a><span class="chat-time"><moment-element datetime="{{item.sentAt}}" output-format="hh:mm A"></moment-element></span></div> 
-                <div class="chat-message">just joined!</div>
-              </div>
-            </div>
-          </template>
         </template>
       </template>
     </div>
@@ -426,13 +286,15 @@
       },
 
       _sendChat: function(type){
+        // We should set the time in the database with ServerValue.TIMESTAMP the client cant be trusted
         var today = new Date();
         var thisChat;
         if(type === 'message'){
           thisChat = {
             "sentBy": {
               "id": this.user.uid,
-              "displayName": this.user.displayName
+              "displayName": this.user.displayName,
+              "placeholder": this.user.photoURL,
             },
             "content": this.$$("#message").value,
             "type": "message",
@@ -453,8 +315,10 @@
           thisChat = {
             "sentBy": {
               "id": this.user.uid,
-              "displayName": name
+              "displayName": name,
+              "placeholder": this.user.photoURL,
             },
+            "content": "joined",
             "type": "joined",
             "sentAt": today.getTime()
           };
