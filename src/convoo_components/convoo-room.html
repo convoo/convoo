@@ -322,7 +322,7 @@
                   <div class="chat-text"><a href$="/u/{{item.sentBy.id}}" class="chat-name">{{item.sentBy.displayName}}</a> <span class="chat-time"><moment-element datetime="{{item.sentAt}}" output-format="hh:mm A"></moment-element></span></div>
                 </template>
                 <div class="chat-text flexchild"> 
-                  <div class="chat-message">{{item.content}}</div>
+                  <div class="chat-message">{{item.content}}</div><iron-icon icon="delete">
                 </div>
               </div>
                 <!--This section should only appear when hovering over the chat item-->
