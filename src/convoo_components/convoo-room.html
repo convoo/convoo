@@ -206,12 +206,8 @@
 
             <convoo-message 
                 item$={{item}}
-                message-type$={{item.type}}
-                message$="{{item.content}}"
-                user-name$="{{item.sentBy.displayName}}"
-                message-time$="{{item.sentAt}}"
-                user-placeholder$="{{item.sentBy.placeholder}}"
                 same-author$="{{!_sameAuthor(chats, index)}}"
+                uid$="{{user.uid}}"
                 >
             </convoo-message>
           
