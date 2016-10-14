@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/login-fire/social-login-fire.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="../bower_components/file-fire/file-fire.html">
 
 <dom-module id="convoo-login">
 
@@ -43,6 +44,10 @@
       #square-logo{
         padding-bottom: 45px;
       }
+
+      file-fire {
+        display: none;
+      }
     </style>
 
     <div class="card" hidden$="{{signedIn}}">
@@ -54,7 +59,7 @@
         twitter
         user="{{user}}"
         signed-in="{{signedIn}}"
-        on-signedin="_saveUser">
+        on-signedin="_getUser">
       </social-login-fire>
     </div>
 
@@ -64,6 +69,21 @@
       path="/u/"
       data="{{newUser}}">
     </firebase-document>
+
+
+    <file-fire
+      app-name="convoofire"
+      path="/u/{{user.displayName}}"
+      download-url="{{userImageLinks}}"
+      placeholder="{{userImagePlaceholder}}"
+      src-url="{{providerImageLink}}"
+      max-scale="3"
+      resize-height="32"
+      resize-width="32"
+      over-write
+      on-upload="_saveUser"
+    >
+    </file-fire>
 
   </template>
 
@@ -90,15 +110,22 @@
         }
       },
 
-      _saveUser: function(u){
+      _getUser: function(u){
         if(typeof u.detail.uid != 'undefined'){
+          this.providerImageLink = u.detail.photoURL;
           this.newUser.displayName = u.detail.displayName;
-          this.newUser.photoURL = u.detail.photoURL;
           this.newUser.providerId = u.detail.providerId;
           this.newUser.providerData = u.detail.providerData;
-          this.$.newUserDocument.save("/u/", u.detail.uid);
         }
+      },
+
+      _saveUser: function(e){
+        console.log(e);
+        this.newUser.placeholder = e.detail.placeholder;
+        this.newUser.photoUrl = e.detail.urls;
+        this.$.newUserDocument.save("/u/", u.detail.uid);
       }
+
 
     });
 
