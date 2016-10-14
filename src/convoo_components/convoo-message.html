@@ -22,11 +22,20 @@
       }
       .message-tools{
         display:var(--tools-display, none);
+        background-color:var(--message-background, #2a363b);
         font-size:0.8em;
         font-weight: 100;
-        opacity:0.6;
+        opacity:1;
         cursor:hand;
         cursor:pointer;
+        border-radius:4px;
+        border-left: 1px solid #2a363b;
+      }
+      .message-tools:hover{
+        border-left: 1px solid #212a2e;
+        border-top: 1px solid #212a2e;
+        border-right: 1px solid #212a2e;
+        border-bottom: 1px solid #212a2e;
       }
       .horizontal {
         @apply(--layout-horizontal);
@@ -98,6 +107,11 @@
         letter-spacing: 0.1em;
         opacity:0.4;
       }
+      .time:hover{
+        color:white;
+        opacity:1;
+        cursor:default;
+      }
       .joined-time{
         color:#d4d7d8;
         font-size:0.6em;
@@ -109,17 +123,40 @@
         top:-4px;
         right:5px;
       }
+      .joined-time:hover{
+        color:white;
+        opacity:1;
+        cursor:default;
+      }
       .message{
+        background-color:var(--message-background, #2a363b);
         color:#d4d7d8;
         font-size:0.8em;
         font-weight: 100;
         line-height:2.7em;
+        border-radius:4px;
+        border-left: 1px solid #2a363b;
+      }
+
+      .message:hover{
+        background-color:var(--message-background, #2a363b);
+        border: 1px solid #212a2e;
+        cursor:text;
+        color:white;
+      }
+      .message span{
+        outline-color: transparent;
+        outline-style: none;
+        padding-left:10px;
       }
       .joined{
         font-size:0.8em;
         font-weight: 100;
         font-style: italic;
         opacity:0.6;
+      }
+      .tools:hover{
+        color:white;
       }
       paper-icon-button{
         height:35px;
@@ -134,12 +171,13 @@
       </div>
       <div class="flexchild">
         <div class="vertical">
-            <template is="dom-if" if={{sameAuthor}}><div><a href$="/u/{{item.sentBy.id}}" class="user-name">{{item.sentBy.displayName}} </a><moment-element datetime="{{item.sentAt}}" output-format="h:mm A" class="time"></moment-element></div></template>
+            <template is="dom-if" if={{sameAuthor}}><div><a href$="/u/{{item.sentBy.id}}" class="user-name">{{item.sentBy.displayName}}</a><moment-element datetime="{{item.sentAt}}" output-format="h:mm A" class="time"></moment-element></div></template>
             <div class="horizontal">
-                <div class="message flexchild" on-mouseover="_hoverMessage" on-mouseout="_unHoverMessage">{{item.content}} </div>
+                <div class="message flexchild" on-mouseover="_hoverMessage" on-mouseout="_unHoverMessage">
+                  <span contenteditable>{{item.content}}</span></div>
                 <div class="message-tools" on-mouseover="_hoverMessage" on-mouseout="_unHoverMessage">
-                  <paper-icon-button icon="delete"></paper-icon-button>
-                  <paper-icon-button icon="star-border"></paper-icon-button>
+                  <paper-icon-button icon="delete" class="tools"></paper-icon-button>
+                  <paper-icon-button icon="tangent" class="tools"></paper-icon-button>
                   </div>
             </div>
         </div>
@@ -191,10 +229,12 @@
       },
       _hoverMessage: function(){
           this.customStyle["--tools-display"] = "block";
+          this.customStyle["--message-background"] = "#2d3a3f";
           this.updateStyles();
       },
       _unHoverMessage: function(){
           this.customStyle["--tools-display"] = "none";
+          this.customStyle["--message-background"] = "#2a363b";
           this.updateStyles();
       }
 
