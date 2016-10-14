@@ -22,7 +22,8 @@
     "paper-fab": "PolymerElements/paper-fab#^1.2.0",
     "slug": "^0.9.1",
     "paper-card": "PolymerElements/paper-card#^1.1.1",
-    "moment-element": "^0.4.1"
+    "moment-element": "^0.4.1",
+    "image-fire": "file-fire#*"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
