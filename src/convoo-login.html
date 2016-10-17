@@ -112,7 +112,8 @@
 
       _getUser: function(u){
         if(typeof u.detail.uid != 'undefined'){
-          this.providerImageLink = u.detail.photoURL;
+    //      this.providerImageLink = u.detail.photoURL;
+          this.providerImageLink = 'myURL';
           this.newUser.displayName = u.detail.displayName;
           this.newUser.providerId = u.detail.providerId;
           this.newUser.providerData = u.detail.providerData;
@@ -121,9 +122,10 @@
 
       _saveUser: function(e){
         console.log(e);
-        this.newUser.placeholder = e.detail.placeholder;
+        //this.newUser.placeholder = e.detail.placeholder;
+        this.newUser.placeholder = 'e.detail.placeholder';
         this.newUser.photoUrl = e.detail.urls;
-        this.$.newUserDocument.save("/u/", u.detail.uid);
+        this.$.newUserDocument.save("/u/", e.detail.uid);
       }
 
 
