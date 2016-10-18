@@ -123,8 +123,9 @@
       _saveUser: function(e){
         // This time out feels wrong, this function is being triggered too early
         setTimeout(function(){ 
+            console.log(this.userImageLinks);
             this.newUser.placeholder = e.detail.placeholder;
-            this.newUser.photoUrl = e.detail.url;
+            this.newUser.photoUrl = this.userImageLinks;
             this.$.newUserDocument.save("/u/", this.uid);
         }.bind(this), 1000);
         
