@@ -73,11 +73,11 @@
 
     <file-fire
       app-name="convoofire"
-      path="/u/{{user.displayName}}"
+      path="/u/{{user.uid}}"
       download-url="{{userImageLinks}}"
       placeholder="{{userImagePlaceholder}}"
       src-url="{{providerImageLink}}"
-      max-scale="3"
+      max-scale="4"
       resize-height="32"
       resize-width="32"
       over-write
@@ -112,6 +112,7 @@
 
       _getUser: function(u){
         if(typeof u.detail.uid != 'undefined'){
+          this.uid = u.detail.uid;
           this.providerImageLink = u.detail.photoURL;
           this.newUser.displayName = u.detail.displayName;
           this.newUser.providerId = u.detail.providerId;
@@ -120,9 +121,14 @@
       },
 
       _saveUser: function(e){
-        this.newUser.placeholder = e.detail.placeholder;
-     //   this.newUser.photoUrl = e.detail.urls;
-        this.$.newUserDocument.save("/u/", e.detail.uid);
+        // This time out feels wrong, this function is being triggered too early
+        setTimeout(function(){ 
+            this.newUser.placeholder = e.detail.placeholder;
+            this.newUser.photoUrl = e.detail.url;
+            this.$.newUserDocument.save("/u/", this.uid);
+        }.bind(this), 1000);
+        
+
       }
 
 
