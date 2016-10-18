@@ -121,6 +121,7 @@
       },
 
       _saveUser: function(e){
+        console.log('FIRE');
         // This time out feels wrong, this function is being triggered too early
         setTimeout(function(){ 
             this.newUser.placeholder = e.detail.placeholder;

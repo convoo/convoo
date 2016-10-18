@@ -48,6 +48,25 @@
         width: 200px;
         font-size: 14px;
       }
+
+      iron-image{
+        width:100px; 
+        height:100px; 
+        border-radius:50%;
+        overflow: none;
+      }
+      #placeholder{
+        width:100px; 
+        height:100px; 
+        border-radius:50%;
+        overflow: none;
+      }
+      #sizedImgDiv{
+        width:100px; 
+        height:100px; 
+        border-radius:50%;
+        overflow: none;
+      }
     </style>
 
     <firebase-document
@@ -74,7 +93,15 @@
     </firebase-query>
 
     <div class="container profile">
-      <img src$="{{thisUser.photoURL}}">
+      <iron-image 
+      width="100"
+      height="100"
+      sizing="contain" 
+      preload 
+      fade 
+      src="{{thisUser.photoUrl.1}}"
+      placeholder="{{thisUser.placeholder}}">
+      </iron-image>
       <h1>{{thisUser.displayName}}</h1>
       <p class="follows-you" hidden$="{{!isFollowed}}">Follows You</p>
       <div class="actions" hidden$="{{hideActions}}">
