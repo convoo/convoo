@@ -172,7 +172,13 @@
             <template is="dom-if" if={{sameAuthor}}><div><a href$="/u/{{item.sentBy.id}}" class="user-name">{{item.sentBy.displayName}}</a><moment-element datetime="{{item.sentAt}}" output-format="h:mm A" class="time"></moment-element></div></template>
             <div class="horizontal">
                 <div class="message flexchild" on-mouseover="_hoverMessage" on-mouseout="_unHoverMessage">
-                  <span contenteditable on-blur="_saveMe">{{item.content}}</span></div>
+                  <template is="dom-if" if={{_isAuthor}}>
+                    <span contenteditable on-blur="_saveMe">{{item.content}}</span>
+                  </template>
+                  <template is="dom-if" if={{!_isAuthor}}>
+                    <span on-blur="_saveMe">{{item.content}}</span>
+                  </template>
+                </div>
                 <div class="message-tools" on-mouseover="_hoverMessage" on-mouseout="_unHoverMessage">
                   <paper-icon-button icon="delete" class="tools" on-tap="_deleteMe"></paper-icon-button>
                   <paper-icon-button icon="tangent" class="tools" on-tap="_goTangent"></paper-icon-button>
@@ -211,7 +217,8 @@
           sameAuthor: {
             type:Boolean,
             value: false
-            }
+            },
+
       },
 
       attached: function(){
@@ -226,6 +233,12 @@
                   break;
           }
       },
+
+      _isAuthor: function(uid){
+        console.log(this.item.sentBy.id == uid);
+          return this.item.sentBy.id == uid;
+      },
+
       _hoverMessage: function(){
         if(this.item.sentBy.id == this.uid){
           this.customStyle["--tools-display"] = "block";
