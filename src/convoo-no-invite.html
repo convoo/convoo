@@ -1,0 +1,46 @@
+<dom-module id="convoo-no-invite">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+      .card {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        padding: 100px 16px 60px 16px;
+        margin: 24px;
+        border-radius: 5px;
+        background-color: #2a363b;
+        color: #757575;
+        text-align: center;
+        background-image: url('../images/background.jpg');
+        background-size: 800px 800px;
+      
+      }
+      h3 {
+        font-size: 32px;
+        font-weight: 200;
+        margin: 16px 0;
+        color: #ddd;
+      }
+    </style>
+
+    <div class="card">
+      <h3>We're sorry</h3>
+      <p>You haven't been invited yet. Please come back later to check your invite status or try to find an invite link from someone already on Convoo. </p>
+    </div>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'convoo-no-invite'
+
+    });
+
+  </script>
+
+</dom-module>

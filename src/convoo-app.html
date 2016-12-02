@@ -124,6 +124,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: #cc394d
       }
 
+      .invite-link {
+        color: #fff;
+      }
+      .invite-link a {
+        color: #fff;
+      }
+
       .toolbar-link {
         text-decoration: none;
       }
@@ -174,6 +181,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       >
     </firebase-app>
 
+    <firebase-document
+      app-name="convoofire"
+      path$="/u/[[user.uid]]/invited"
+      data="{{invited}}">
+    </firebase-document>
+
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -218,6 +231,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 My Profile
               </paper-button>
             </a>
+            <template is="dom-if" if="[[invited.url]]">
+              <br><br>
+              <div class="invite-link">
+                Share this link to invite others
+                <a href="[[invited.url]]">https://convoo.me/invite/[[invited.url]]</a>
+                <!-- TODO: Add a copy button here https://github.com/sudodoki/copy-button -->
+              </div>
+              <br><br>
+            </template>
             <paper-button class="draw-button" id="sign-out">
               <iron-icon icon="power-settings-new"></iron-icon>
               Sign Out
@@ -246,10 +268,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
           <convoo-home name="home"></convoo-home>
           <convoo-dashboard name="dashboard" signed-in="{{signedIn}}" user="{{user}}"></convoo-dashboard>
-          <convoo-login name="login" signed-in="{{signedIn}}" user="{{user}}" id="login"></convoo-login>
+          <convoo-login name="login" signed-in="{{signedIn}}" user="{{user}}" invite="{{subrouteData.id}}" id="login"></convoo-login>
           <convoo-new-room name="new-room" user="{{user}}"></convoo-new-room>
           <convoo-r name="r" room-id="{{subrouteData.id}}" signed-in="{{signedIn}}" user="{{user}}"></convoo-r>
           <convoo-u name="u" user-id="{{subrouteData.id}}" signed-in="{{signedIn}}" user="{{user}}"></convoo-u>
+          <convoo-no-invite name="no-invite"></convoo-no-invite>
         </iron-pages>
 
         <a href="/new-room" tabindex="-1" hidden$="{{!signedIn}}">
@@ -312,7 +335,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _routePageChanged: function(page) {
-        this.page = page || 'home';
+        if(this.signedIn){
+          if(this.invited && this.invited.by){
+            this.page = page || 'home';
+          } else {
+            this.page = "no-invite";
+          }
+        }else {
+          this.page = "login";
+        }
       },
 
       _layoutChange: function(wide) {
@@ -324,7 +355,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _pageChanged: function(page) {
         // load page import on demand except for certain pages in the array
-        if(["login"].indexOf(page) < 0){
+        if(["login", "invite"].indexOf(page) < 0){
           this.importHref(
             this.resolveUrl('convoo-' + page + '.html'), null, null, true);
         }

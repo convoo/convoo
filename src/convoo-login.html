@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/login-fire/social-login-fire.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 <link rel="import" href="../bower_components/file-fire/file-fire.html">
 
 <dom-module id="convoo-login">
@@ -53,6 +54,9 @@
     <div class="card" hidden$="{{signedIn}}">
       <img src="../images/app-icon.svg" width="100px" height="100px" id="square-logo">
       <h1>Let's get this conversation started</h1>
+      <p>Sign in or Sign up to get invited below.</p>
+
+
       <social-login-fire
         id="loginLogic"
         app-name="convoofire"
@@ -63,10 +67,18 @@
       </social-login-fire>
     </div>
 
+    <firebase-query
+      app-name="convoofire"
+      path="/u"
+      order-by-child="invited/url"
+      equal-to$="{{invite}}"
+      data="{{validInvite}}">
+    </firebase-query>
+
     <firebase-document
       id="newUserDocument"
       app-name="convoofire"
-      path="/u/"
+      path$="/u/[[user.uid]]"
       data="{{newUser}}">
     </firebase-document>
 
@@ -107,29 +119,40 @@
         user: {
           type: Object,
           notify: true
+        },
+        /**
+         * The url extension for an invite
+         */
+        invite: {
+          type: String
         }
+      },
+      attached: function(){
+        console.log(this.validInvite);
+        setTimeout(function(){
+          console.log(this.validInvite);
+        }.bind(this),2000)
       },
 
       _getUser: function(u){
         if(typeof u.detail.uid != 'undefined'){
-          this.uid = u.detail.uid;
           this.providerImageLink = u.detail.photoURL;
           this.newUser.displayName = u.detail.displayName;
           this.newUser.providerId = u.detail.providerId;
           this.newUser.providerData = u.detail.providerData;
+          if(this.validInvite){
+            this.newUser.invited = {
+              by: this.validInvite[0].$key,
+              url: "asgaisgf921gwdijwg9"
+            }
+          }
         }
       },
 
       _saveUser: function(e){
-        console.log('FIRE');
-        // This time out feels wrong, this function is being triggered too early
-        setTimeout(function(){ 
-            this.newUser.placeholder = e.detail.placeholder;
-            this.newUser.photoUrl = e.detail.url;
-            this.$.newUserDocument.save("/u/", this.uid);
-        }.bind(this), 3000);
-        
-
+          console.log("This fired");
+          this.newUser.placeholder = e.detail.placeholder;
+          this.newUser.photoUrl = e.detail.url;
       }
 
 
